@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portfolio Dashboard</title>
+<style>
+:root{--bg:#0f1115;--panel:#171a20;--panel2:#1d2128;--text:#f4f6f8;--muted:#9aa4b2;--line:#2b313a;--good:#47d18c;--warn:#f4c95d;--bad:#ff6b6b;--blue:#5aa9ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:linear-gradient(90deg,var(--good),var(--blue));transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60% target";position:absolute;left:60%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}@media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:520px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.value{font-size:24px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+<h1>Portfolio Dashboard</h1>
+<div class="sub">Privacy-safe public build: no portfolio balances are embedded in the HTML. Load Excel locally to populate your dashboard.</div>
+
+<div class="grid">
+<div class="card"><div class="label">BTC price (live)</div><div class="value" id="btcPrice">—</div><div class="small" id="priceSource">Loading…</div></div>
+<div class="card"><div class="label">BTC holdings</div><div class="value" id="btcHoldingsView">0.00000000</div><div class="small" id="satsView">0 sats</div></div>
+<div class="card"><div class="label">BTC asset value</div><div class="value" id="assetValue">—</div><div class="small">Dynamic with BTC price</div></div>
+<div class="card"><div class="label">Total portfolio</div><div class="value" id="totalValue">—</div><div class="small">BTC + buffer</div></div>
+</div>
+
+<div class="two section">
+<div class="card">
+<div class="ratioRow"><div><div class="label">Asset / Buffer thermometer</div><div class="value" style="font-size:24px"><span id="assetPct">—</span> / <span id="bufferPct">—</span></div></div><div style="text-align:right"><div class="label">New BTC exposure</div><div id="gateStatus" class="status">—</div></div></div>
+<div class="bar"><div class="fill" id="ratioFill"></div></div><div class="target"></div><div class="small" id="ratioNote"></div>
+</div>
+<div class="card"><div class="label">Buffer needed to return to 60/40</div><div class="value" id="bufferGap">—</div><div class="small" id="bufferTargetText">—</div></div>
+</div>
+
+<div class="two section">
+<div class="card">
+<div class="label">Excel sync</div>
+<div class="small" style="margin-bottom:10px">Load the latest row from the “Portfolio Snapshot” sheet. Balances are parsed from the Notes column when available.</div>
+<div class="actions">
+  <input id="excelFile" type="file" accept=".xlsx,.xls,.xlsm" style="display:none">
+  <button onclick="document.getElementById('excelFile').click()">Load Excel</button>
+  <span id="excelStatus" class="small">No file loaded yet.</span>
+</div>
+<div style="height:14px"></div>
+<div class="label" style="margin-bottom:10px">Balances</div>
+<table><thead><tr><th>Bucket</th><th>Value</th></tr></thead><tbody>
+<tr><td>Revolut</td><td><input id="revolut" type="number" step="0.01"></td></tr>
+<tr><td>ING current</td><td><input id="ingCurrent" type="number" step="0.01"></td></tr>
+<tr><td>ING savings</td><td><input id="ingSavings" type="number" step="0.01"></td></tr>
+<tr><td>USDC (EUR value)</td><td><input id="usdc" type="number" step="0.01"></td></tr>
+<tr><td>BTC holdings</td><td><input id="btcHoldings" type="number" step="0.00000001"></td></tr>
+</tbody></table>
+<div class="actions"><button onclick="saveState()">Save values</button><button onclick="refreshPrice()">Refresh BTC price</button><button onclick="saveSnapshot()">Save snapshot</button></div>
+</div>
+
+<div class="card">
+<div class="label">Quick payday update</div><div class="small" style="margin-bottom:10px">Add salary/surplus to Revolut, then edit actual balances later if needed.</div>
+<div class="inline"><input id="salaryAdd" type="number" step="0.01" placeholder="e.g. 1000"><button onclick="addSalary()">Add to buffer</button></div>
+<div style="height:14px"></div><div class="label">Current buffer</div><div class="value" id="bufferValue">—</div><div class="small" id="lastSaved">—</div>
+<div class="actions"><button onclick="exportSnapshots()">Export snapshots CSV</button><button onclick="resetDefaults()">Reset defaults</button></div>
+</div>
+</div>
+
+<div class="footer">Privacy-safe build. No portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback.</div>
+</div>
+
+<script>
+const defaults={btcHoldings:0,revolut:0,ingCurrent:0,ingSavings:0,usdc:0,fallbackPrice:0};
+let state=JSON.parse(localStorage.getItem("portfolioState_v2")||"null")||{...defaults};let btcPrice=state.fallbackPrice||0;
+function fmt(n,d=2){return Number(n).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
+function pct(n){return fmt(n,1)+"%"}
+function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.btcHoldings=+btcHoldings.value||0}
+function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;btcHoldings.value=state.btcHoldings}
+function calc(){readInputs();const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const ap=total?asset/total*100:0;const bp=100-ap;const targetBuffer=asset*(40/60);const gap=Math.max(0,targetBuffer-buffer);
+document.getElementById("btcPrice").textContent=fmt(btcPrice);btcHoldingsView.textContent=state.btcHoldings.toFixed(8);satsView.textContent=Math.round(state.btcHoldings*1e8).toLocaleString()+" sats";assetValue.textContent=fmt(asset);bufferValue.textContent=fmt(buffer);totalValue.textContent=fmt(total);assetPct.textContent=pct(ap);bufferPct.textContent=pct(bp);ratioFill.style.width=Math.min(100,ap)+"%";bufferGap.textContent=gap>0?fmt(gap):"0.00";bufferTargetText.textContent="Target buffer at current BTC price: "+fmt(targetBuffer);
+gateStatus.className="status";if(ap>65){gateStatus.textContent="RED — buffer mode";gateStatus.classList.add("bad");ratioNote.textContent="Asset side is hot. Existing BTC can run; new cash prioritizes buffer."}else if(ap>60){gateStatus.textContent="YELLOW — wait";gateStatus.classList.add("warn");ratioNote.textContent="Above 60% asset. Build buffer / observe until the thermometer cools."}else{gateStatus.textContent="GREEN — exposure gate open";gateStatus.classList.add("good");ratioNote.textContent="At or below 60% asset. New BTC exposure can be considered; not an automatic buy signal."}}
+function saveState(){readInputs();state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));lastSaved.textContent="Saved locally: "+new Date().toLocaleString();calc()}
+async function fetchCoinGecko(){const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.bitcoin.eur}
+async function fetchCoinbase(){const r=await fetch("https://api.coinbase.com/v2/prices/BTC-EUR/spot",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.data.amount}
+async function refreshPrice(){priceSource.textContent="Refreshing…";try{btcPrice=await fetchCoinGecko();priceSource.textContent="CoinGecko • "+new Date().toLocaleTimeString()}catch(e1){try{btcPrice=await fetchCoinbase();priceSource.textContent="Coinbase fallback • "+new Date().toLocaleTimeString()}catch(e2){priceSource.textContent="Live fetch failed • using last saved price"}}state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));calc()}
+function addSalary(){const x=+salaryAdd.value||0;if(!x)return;state.revolut+=x;revolut.value=state.revolut.toFixed(2);salaryAdd.value="";saveState()}
+function saveSnapshot(){readInputs();const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");snaps.push({timestamp:new Date().toISOString(),btcPrice,btcHoldings:state.btcHoldings,asset,buffer,total,assetPct:total?asset/total*100:0,bufferPct:total?buffer/total*100:0});localStorage.setItem("portfolioSnapshots",JSON.stringify(snaps));lastSaved.textContent="Snapshot saved: "+new Date().toLocaleString()}
+function exportSnapshots(){const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");if(!snaps.length){alert("No snapshots saved yet.");return}const header=["timestamp","btcPrice","btcHoldings","asset","buffer","total","assetPct","bufferPct"];const rows=[header.join(",")].concat(snaps.map(s=>header.map(k=>s[k]).join(",")));const blob=new Blob([rows.join("\n")],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="portfolio_snapshots.csv";a.click();URL.revokeObjectURL(a.href)}
+function resetDefaults(){if(!confirm("Reset saved dashboard values to defaults?"))return;state={...defaults};localStorage.setItem("portfolioState_v2",JSON.stringify(state));populateInputs();calc();refreshPrice()}
+
+function numFromText(text, key){
+  if(!text) return null;
+  const esc = key.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+  const re = new RegExp(esc+"\\s*([0-9.,]+)","i");
+  const m = String(text).match(re);
+  if(!m) return null;
+  let s=m[1];
+  // Notes use commas as thousands separators in the current sheet.
+  if(s.includes(",") && s.includes(".")) s=s.replace(/,/g,"");
+  else if(s.includes(",") && !s.includes(".")) s=s.replace(",",".");
+  return Number(s);
+}
+
+function findLatestRow(rows){
+  let best=null;
+  for(const row of rows){
+    const rawDate = row["Date"];
+    if(rawDate===undefined || rawDate===null || rawDate==="") continue;
+    let d;
+    if(rawDate instanceof Date) d=rawDate;
+    else if(typeof rawDate==="number"){
+      const parsed=XLSX.SSF.parse_date_code(rawDate);
+      if(parsed) d=new Date(parsed.y,parsed.m-1,parsed.d);
+    } else {
+      const s=String(rawDate).trim();
+      d=new Date(s);
+      if(isNaN(d)){
+        const parts=s.split(/[-/]/).map(Number);
+        if(parts.length===3){
+          if(parts[0]>1900) d=new Date(parts[0],parts[1]-1,parts[2]);
+          else d=new Date(parts[2],parts[1]-1,parts[0]);
+        }
+      }
+    }
+    if(d && !isNaN(d) && (!best || d>best.date)) best={row,date:d};
+  }
+  return best;
+}
+
+async function loadExcelFile(file){
+  const status=document.getElementById("excelStatus");
+  status.textContent="Reading Excel…";
+  try{
+    const data=await file.arrayBuffer();
+    const book=XLSX.read(data,{type:"array",cellDates:true});
+    const sheetName=book.SheetNames.includes("Portfolio Snapshot") ? "Portfolio Snapshot" : book.SheetNames[0];
+    const sheet=book.Sheets[sheetName];
+    const rows=XLSX.utils.sheet_to_json(sheet,{defval:null});
+    const latest=findLatestRow(rows);
+    if(!latest) throw new Error("No dated rows found.");
+
+    const row=latest.row;
+    const notes=row["Notes"] || "";
+
+    const totalBtc = numFromText(notes,"BTC");
+    const rev = numFromText(notes,"Revolut");
+    const ingCur = numFromText(notes,"ING current");
+    const ingSav = numFromText(notes,"ING savings");
+    const usdcVal = numFromText(notes,"USDC");
+
+    if(totalBtc!==null) state.btcHoldings=totalBtc;
+    if(rev!==null) state.revolut=rev;
+    if(ingCur!==null) state.ingCurrent=ingCur;
+    if(ingSav!==null) state.ingSavings=ingSav;
+    if(usdcVal!==null) state.usdc=usdcVal;
+
+    // Fallback if Notes does not include bucket details: preserve total Cash
+    // by putting the difference into Revolut.
+    const cashCell = Number(row["Cash (EUR)"] ?? row["Cash"] ?? NaN);
+    const parsedBuffer=[state.revolut,state.ingCurrent,state.ingSavings,state.usdc].reduce((a,b)=>a+(+b||0),0);
+    if(Number.isFinite(cashCell) && Math.abs(parsedBuffer-cashCell)>0.02){
+      state.revolut += cashCell-parsedBuffer;
+    }
+
+    localStorage.setItem("portfolioState_v2",JSON.stringify(state));
+    populateInputs();
+    calc();
+    status.textContent="Loaded "+latest.date.toLocaleDateString()+" from "+sheetName;
+    lastSaved.textContent="Excel synced: "+new Date().toLocaleString();
+  }catch(err){
+    console.error(err);
+    status.textContent="Excel import failed: "+err.message;
+  }
+}
+
+document.getElementById("excelFile").addEventListener("change", e=>{
+  const f=e.target.files && e.target.files[0];
+  if(f) loadExcelFile(f);
+  e.target.value="";
+});
+
+["revolut","ingCurrent","ingSavings","usdc","btcHoldings"].forEach(id=>document.getElementById(id).addEventListener("input",calc));
+populateInputs();calc();refreshPrice();setInterval(refreshPrice,60000);
+</script>
+</body>
+</html>
