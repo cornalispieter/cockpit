@@ -6,7 +6,7 @@
 <title>Portfolio Dashboard</title>
 <style>
 :root{--bg:#0f1115;--panel:#171a20;--panel2:#1d2128;--text:#f4f6f8;--muted:#9aa4b2;--line:#2b313a;--good:#47d18c;--warn:#f4c95d;--bad:#ff6b6b;--blue:#5aa9ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:linear-gradient(90deg,var(--good),var(--blue));transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60% target";position:absolute;left:60%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}.capCard.good{border-color:rgba(71,209,140,.65);box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.capCard.bad{border-color:rgba(255,107,107,.65);box-shadow:0 0 0 1px rgba(255,107,107,.08) inset}.capValue.good{color:var(--good)}.capValue.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:linear-gradient(90deg,var(--good),var(--blue));transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60–65% operating band";position:absolute;left:62.5%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}.capCard.good{border-color:rgba(71,209,140,.65);box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.capCard.warn{border-color:rgba(244,201,93,.65);box-shadow:0 0 0 1px rgba(244,201,93,.08) inset}.capCard.bad{border-color:rgba(255,107,107,.65);box-shadow:0 0 0 1px rgba(255,107,107,.08) inset}.capValue.good{color:var(--good)}.capValue.warn{color:var(--warn)}.capValue.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
 .maintenance{margin-top:16px}
 .maintenance details{background:transparent}
 .maintenance summary{
@@ -29,7 +29,7 @@
 <body>
 <div class="wrap">
 <h1>Portfolio Dashboard</h1>
-<div class="sub">Privacy-safe public build: no portfolio balances are embedded. Load Excel locally; the dashboard calculates live BTC value, 60/40 status, and exposure cap.</div>
+<div class="sub">65/35 working equilibrium • 60/40 deployment gate • 20K strategic reserve milestone.</div>
 
 <div class="grid">
 <div class="card"><div class="label">BTC price (live)</div><div class="value" id="btcPrice">—</div><div class="small" id="priceSource">Loading…</div></div>
@@ -87,7 +87,7 @@
   </details>
 </div>
 
-<div class="footer">Privacy-safe build. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback.</div>
+<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback.</div>
 </div>
 
 <script>
@@ -97,35 +97,86 @@ function fmt(n,d=2){return Number(n).toLocaleString(undefined,{minimumFractionDi
 function pct(n){return fmt(n,1)+"%"}
 function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.btcHoldings=+btcHoldings.value||0}
 function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;btcHoldings.value=state.btcHoldings}
-function calc(){readInputs();const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const ap=total?asset/total*100:0;const bp=100-ap;const targetBuffer=asset*(40/60);const gap=Math.max(0,targetBuffer-buffer);
-document.getElementById("btcPrice").textContent=btcPrice>0?fmt(btcPrice):"—";btcHoldingsView.textContent=state.btcHoldings.toFixed(8);satsView.textContent=Math.round(state.btcHoldings*1e8).toLocaleString()+" sats";assetValue.textContent=btcPrice>0?fmt(asset):"—";bufferValue.textContent=fmt(buffer);totalValue.textContent=btcPrice>0?fmt(total):fmt(buffer);assetPct.textContent=total?pct(ap):"—";bufferPct.textContent=total?pct(bp):"—";ratioFill.style.width=Math.min(100,ap)+"%";
+function calc(){
+  readInputs();
+  const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;
+  const asset=state.btcHoldings*btcPrice;
+  const total=asset+buffer;
+  const ap=total?asset/total*100:0;
+  const bp=100-ap;
 
-const exposureCap=Math.max(0,0.60*total-asset);
-const exposureCapPct=total?exposureCap/total*100:0;
-const capCard=document.getElementById("capCard");
-const capValue=document.getElementById("capValue");
-const capLabel=document.getElementById("capLabel");
-const capText=document.getElementById("capText");
-capCard.className="card capCard";
-capValue.className="value capValue";
+  const equilibriumAsset=65/100;
+  const deployGateAsset=60/100;
+  const absoluteBufferMilestone=20000;
 
-if(total===0 || btcPrice<=0){
-  capLabel.textContent="Exposure capacity";
-  capValue.textContent="—";
-  capText.textContent="Load Excel or enter balances, then wait for the live BTC price.";
-}else if(ap>60){
-  capCard.classList.add("bad");capValue.classList.add("bad");
-  capLabel.textContent="BUFFER MODE";
-  capValue.textContent="+"+fmt(gap);
-  capText.textContent="Additional buffer needed to reach 60/40 at the current BTC value.";
-}else{
-  capCard.classList.add("good");capValue.classList.add("good");
-  capLabel.textContent="EXPOSURE CAP AVAILABLE";
-  capValue.textContent=fmt(exposureCap);
-  capText.textContent=fmt(exposureCapPct,1)+"% of portfolio available before reaching 60/40. Cap ≠ quota; deploy in patches if desired.";
+  // Cash needed to return to 65/35, assuming no asset sale.
+  const equilibriumBufferTarget=asset*((1-equilibriumAsset)/equilibriumAsset);
+  const equilibriumBufferGap=Math.max(0,equilibriumBufferTarget-buffer);
+
+  // Deployable capacity only appears below 60/40.
+  const exposureCap=Math.max(0,deployGateAsset*total-asset);
+  const exposureCapPct=total?exposureCap/total*100:0;
+
+  document.getElementById("btcPrice").textContent=btcPrice>0?fmt(btcPrice):"—";
+  btcHoldingsView.textContent=state.btcHoldings.toFixed(8);
+  satsView.textContent=Math.round(state.btcHoldings*1e8).toLocaleString()+" sats";
+  assetValue.textContent=btcPrice>0?fmt(asset):"—";
+  bufferValue.textContent=fmt(buffer);
+  totalValue.textContent=btcPrice>0?fmt(total):fmt(buffer);
+  assetPct.textContent=total?pct(ap):"—";
+  bufferPct.textContent=total?pct(bp):"—";
+  ratioFill.style.width=Math.min(100,ap)+"%";
+
+  const capCard=document.getElementById("capCard");
+  const capValue=document.getElementById("capValue");
+  const capLabel=document.getElementById("capLabel");
+  const capText=document.getElementById("capText");
+  capCard.className="card capCard";
+  capValue.className="value capValue";
+
+  if(total===0 || btcPrice<=0){
+    capLabel.textContent="Balance-sheet status";
+    capValue.textContent="—";
+    capText.textContent="Load Excel or enter balances, then wait for the live BTC price.";
+  }else if(ap>65){
+    capCard.classList.add("warn");
+    capValue.classList.add("warn");
+    capLabel.textContent="BUFFER MODE";
+    capValue.textContent="+"+fmt(equilibriumBufferGap);
+    capText.textContent="Additional buffer to return to the 65/35 working equilibrium. No asset sale required.";
+  }else if(ap>=60){
+    capCard.classList.add("good");
+    capValue.classList.add("good");
+    capLabel.textContent="NORMAL OPERATING ZONE";
+    capValue.textContent="60–65%";
+    const reserveProgress=Math.min(100,buffer/absoluteBufferMilestone*100);
+    capText.textContent="No forced action. Strategic reserve: "+fmt(buffer)+" / "+fmt(absoluteBufferMilestone)+" ("+fmt(reserveProgress,1)+"%).";
+  }else{
+    capCard.classList.add("good");
+    capValue.classList.add("good");
+    capLabel.textContent="EXPOSURE CAP AVAILABLE";
+    capValue.textContent=fmt(exposureCap);
+    capText.textContent=fmt(exposureCapPct,1)+"% of portfolio available before reaching 60/40. Cap ≠ quota; deploy in patches if desired.";
+  }
+
+  gateStatus.className="status";
+  if(total===0 || btcPrice<=0){
+    gateStatus.textContent="—";
+    ratioNote.textContent="Load portfolio data to activate the thermometer.";
+  }else if(ap>65){
+    gateStatus.textContent="AMBER — buffer mode";
+    gateStatus.classList.add("warn");
+    ratioNote.textContent="Above 65% asset. Existing asset can run; new cashflow preferentially rebuilds reserve.";
+  }else if(ap>=60){
+    gateStatus.textContent="GREEN — normal zone";
+    gateStatus.classList.add("good");
+    ratioNote.textContent="Inside the 60–65% operating band. No allocation action is required.";
+  }else{
+    gateStatus.textContent="GREEN — deployment gate open";
+    gateStatus.classList.add("good");
+    ratioNote.textContent="Below 60% asset. Exposure capacity is available, subject to market structure and reserve discipline.";
+  }
 }
-
-gateStatus.className="status";if(ap>65){gateStatus.textContent="RED — buffer mode";gateStatus.classList.add("bad");ratioNote.textContent="Asset side is hot. Existing BTC can run; new cash prioritizes buffer."}else if(ap>60){gateStatus.textContent="YELLOW — wait";gateStatus.classList.add("warn");ratioNote.textContent="Above 60% asset. Build buffer / observe until the thermometer cools."}else{gateStatus.textContent="GREEN — exposure gate open";gateStatus.classList.add("good");ratioNote.textContent="At or below 60% asset. New BTC exposure can be considered; the cap shows maximum capacity, not a buy command."}}
 function saveState(){readInputs();state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));lastSaved.textContent="Saved locally: "+new Date().toLocaleString();calc()}
 async function fetchCoinGecko(){const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.bitcoin.eur}
 async function fetchCoinbase(){const r=await fetch("https://api.coinbase.com/v2/prices/BTC-EUR/spot",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.data.amount}
