@@ -75,6 +75,14 @@
   <button onclick="document.getElementById('excelFile').click()">Load Excel</button>
   <span id="excelStatus" class="small">No file loaded yet.</span>
 </div>
+<div style="height:12px"></div>
+<div class="label">Private balance update</div>
+<div class="small" style="margin-bottom:10px">Load a small local JSON update file. No Excel needed and the values are not embedded in this HTML.</div>
+<div class="actions">
+  <input id="balanceUpdateFile" type="file" accept=".json,application/json" style="display:none">
+  <button onclick="document.getElementById('balanceUpdateFile').click()">Load Balance Update</button>
+  <span id="balanceUpdateStatus" class="small">No update file loaded yet.</span>
+</div>
 <div style="height:14px"></div>
 <div class="label" style="margin-bottom:10px">Balances</div>
 <table><thead><tr><th>Bucket</th><th>Value</th></tr></thead><tbody>
@@ -98,7 +106,7 @@
   </details>
 </div>
 
-<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback. USD/JPY/IDR views use live EUR FX rates; EUR remains the accounting base.</div>
+<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel and private JSON balance updates are processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback. USD/JPY/IDR views use live EUR FX rates; EUR remains the accounting base.</div>
 </div>
 
 <script>
@@ -229,6 +237,35 @@ function saveSnapshot(){readInputs();const buffer=state.revolut+state.ingCurrent
 function exportSnapshots(){const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");if(!snaps.length){alert("No snapshots saved yet.");return}const header=["timestamp","btcPrice","btcHoldings","asset","buffer","total","assetPct","bufferPct"];const rows=[header.join(",")].concat(snaps.map(s=>header.map(k=>s[k]).join(",")));const blob=new Blob([rows.join("\n")],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="portfolio_snapshots.csv";a.click();URL.revokeObjectURL(a.href)}
 function resetDefaults(){if(!confirm("Reset saved dashboard values to defaults?"))return;state={...defaults};localStorage.setItem("portfolioState_v2",JSON.stringify(state));populateInputs();calc();refreshPrice()}
 
+
+async function loadBalanceUpdateFile(file){
+  const status=document.getElementById("balanceUpdateStatus");
+  status.textContent="Reading update…";
+  try{
+    const data=JSON.parse(await file.text());
+    const b=data.balances || data;
+    const required=["revolut","ingCurrent","ingSavings","usdc","btcHoldings"];
+    for(const k of required){
+      if(typeof b[k]!=="number" || !Number.isFinite(b[k])) throw new Error("Invalid or missing "+k);
+    }
+    state.revolut=b.revolut;
+    state.ingCurrent=b.ingCurrent;
+    state.ingSavings=b.ingSavings;
+    state.usdc=b.usdc;
+    state.btcHoldings=b.btcHoldings;
+    localStorage.setItem("portfolioState_v2",JSON.stringify(state));
+    populateInputs();
+    calc();
+    const label=data.asOf ? (" • "+data.asOf) : "";
+    status.textContent="Balance update loaded"+label;
+    lastSaved.textContent="Balance update synced: "+new Date().toLocaleString();
+  }catch(err){
+    console.error(err);
+    status.textContent="Balance update failed: "+err.message;
+  }
+}
+
+
 function numFromText(text, key){
   if(!text) return null;
   const esc = key.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
@@ -317,6 +354,12 @@ async function loadExcelFile(file){
 document.getElementById("excelFile").addEventListener("change", e=>{
   const f=e.target.files && e.target.files[0];
   if(f) loadExcelFile(f);
+  e.target.value="";
+});
+
+document.getElementById("balanceUpdateFile").addEventListener("change", e=>{
+  const f=e.target.files && e.target.files[0];
+  if(f) loadBalanceUpdateFile(f);
   e.target.value="";
 });
 
