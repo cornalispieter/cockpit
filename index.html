@@ -6,7 +6,12 @@
 <title>Portfolio Dashboard</title>
 <style>
 :root{--bg:#0f1115;--panel:#171a20;--panel2:#1d2128;--text:#f4f6f8;--muted:#9aa4b2;--line:#2b313a;--good:#47d18c;--warn:#f4c95d;--bad:#ff6b6b;--blue:#5aa9ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:linear-gradient(90deg,var(--good),var(--blue));transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60–65% operating band";position:absolute;left:62.5%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}.capCard.good{border-color:rgba(71,209,140,.65);box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.capCard.warn{border-color:rgba(244,201,93,.65);box-shadow:0 0 0 1px rgba(244,201,93,.08) inset}.capCard.bad{border-color:rgba(255,107,107,.65);box-shadow:0 0 0 1px rgba(255,107,107,.08) inset}.capValue.good{color:var(--good)}.capValue.warn{color:var(--warn)}.capValue.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}
+.fxGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.fxCard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.fxValue{font-size:23px;font-weight:750;letter-spacing:-.3px}
+.fxMeta{font-size:12px;color:var(--muted);margin-top:5px}
+@media(max-width:820px){.fxGrid{grid-template-columns:1fr}}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:linear-gradient(90deg,var(--good),var(--blue));transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60–65% operating band";position:absolute;left:62.5%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}.capCard.good{border-color:rgba(71,209,140,.65);box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.capCard.warn{border-color:rgba(244,201,93,.65);box-shadow:0 0 0 1px rgba(244,201,93,.08) inset}.capCard.bad{border-color:rgba(255,107,107,.65);box-shadow:0 0 0 1px rgba(255,107,107,.08) inset}.capValue.good{color:var(--good)}.capValue.warn{color:var(--warn)}.capValue.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
 .maintenance{margin-top:16px}
 .maintenance details{background:transparent}
 .maintenance summary{
@@ -36,6 +41,12 @@
 <div class="card"><div class="label">BTC holdings</div><div class="value" id="btcHoldingsView">0.00000000</div><div class="small" id="satsView">0 sats</div></div>
 <div class="card"><div class="label">BTC asset value</div><div class="value" id="assetValue">—</div><div class="small">Dynamic with BTC price</div></div>
 <div class="card"><div class="label">Total portfolio</div><div class="value" id="totalValue">—</div><div class="small">BTC + buffer</div></div>
+</div>
+
+<div class="fxGrid">
+  <div class="fxCard"><div class="label">Total portfolio · USD</div><div class="fxValue" id="totalUSD">—</div><div class="fxMeta" id="usdRateMeta">Live EUR/USD</div></div>
+  <div class="fxCard"><div class="label">Total portfolio · JPY</div><div class="fxValue" id="totalJPY">—</div><div class="fxMeta" id="jpyRateMeta">Live EUR/JPY</div></div>
+  <div class="fxCard"><div class="label">Total portfolio · IDR</div><div class="fxValue" id="totalIDR">—</div><div class="fxMeta" id="idrRateMeta">Live EUR/IDR</div></div>
 </div>
 
 <div class="two section">
@@ -87,14 +98,28 @@
   </details>
 </div>
 
-<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback.</div>
+<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel import is processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback. USD/JPY/IDR views use live EUR FX rates; EUR remains the accounting base.</div>
 </div>
 
 <script>
 const defaults={btcHoldings:0,revolut:0,ingCurrent:0,ingSavings:0,usdc:0,fallbackPrice:0};
 let state=JSON.parse(localStorage.getItem("portfolioState_v2")||"null")||{...defaults};let btcPrice=state.fallbackPrice||0;
+let fxRates={USD:null,JPY:null,IDR:null};let fxUpdated=null;
 function fmt(n,d=2){return Number(n).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
 function pct(n){return fmt(n,1)+"%"}
+function moneyUSD(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}
+function moneyJPY(n){return new Intl.NumberFormat("ja-JP",{style:"currency",currency:"JPY",maximumFractionDigits:0}).format(n)}
+function moneyIDR(n){return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n)}
+function updateFXDisplay(total){
+  totalUSD.textContent=fxRates.USD?moneyUSD(total*fxRates.USD):"—";
+  totalJPY.textContent=fxRates.JPY?moneyJPY(total*fxRates.JPY):"—";
+  totalIDR.textContent=fxRates.IDR?moneyIDR(total*fxRates.IDR):"—";
+  const stamp=fxUpdated?(" • "+fxUpdated.toLocaleTimeString()):"";
+  usdRateMeta.textContent=fxRates.USD?("1 EUR = "+fmt(fxRates.USD,4)+" USD"+stamp):"Live EUR/USD";
+  jpyRateMeta.textContent=fxRates.JPY?("1 EUR = "+fmt(fxRates.JPY,2)+" JPY"+stamp):"Live EUR/JPY";
+  idrRateMeta.textContent=fxRates.IDR?("1 EUR = "+Math.round(fxRates.IDR).toLocaleString("id-ID")+" IDR"+stamp):"Live EUR/IDR";
+}
+
 function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.btcHoldings=+btcHoldings.value||0}
 function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;btcHoldings.value=state.btcHoldings}
 function calc(){
@@ -126,6 +151,7 @@ function calc(){
   assetPct.textContent=total?pct(ap):"—";
   bufferPct.textContent=total?pct(bp):"—";
   ratioFill.style.width=Math.min(100,ap)+"%";
+  updateFXDisplay(total);
 
   const capCard=document.getElementById("capCard");
   const capValue=document.getElementById("capValue");
@@ -177,6 +203,23 @@ function calc(){
     ratioNote.textContent="Below 60% asset. Exposure capacity is available, subject to market structure and reserve discipline.";
   }
 }
+async function fetchFXRates(){
+  const r=await fetch("https://open.er-api.com/v6/latest/EUR",{cache:"no-store"});
+  if(!r.ok) throw new Error("FX "+r.status);
+  const j=await r.json();
+  if(!j.rates?.USD || !j.rates?.JPY || !j.rates?.IDR) throw new Error("FX rates unavailable");
+  return {USD:+j.rates.USD,JPY:+j.rates.JPY,IDR:+j.rates.IDR};
+}
+async function refreshFX(){
+  try{
+    fxRates=await fetchFXRates();
+    fxUpdated=new Date();
+    calc();
+  }catch(e){
+    console.warn("FX refresh failed",e);
+  }
+}
+
 function saveState(){readInputs();state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));lastSaved.textContent="Saved locally: "+new Date().toLocaleString();calc()}
 async function fetchCoinGecko(){const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.bitcoin.eur}
 async function fetchCoinbase(){const r=await fetch("https://api.coinbase.com/v2/prices/BTC-EUR/spot",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.data.amount}
@@ -278,7 +321,7 @@ document.getElementById("excelFile").addEventListener("change", e=>{
 });
 
 ["revolut","ingCurrent","ingSavings","usdc","btcHoldings"].forEach(id=>document.getElementById(id).addEventListener("input",calc));
-populateInputs();calc();refreshPrice();setInterval(refreshPrice,60000);
+populateInputs();calc();refreshPrice();refreshFX();setInterval(refreshPrice,60000);setInterval(refreshFX,300000);
 </script>
 </body>
 </html>
