@@ -94,7 +94,7 @@
 </div>
 <div style="height:12px"></div>
 <div class="label">Private balance update</div>
-<div class="small" style="margin-bottom:10px">Load a small local JSON update file. No Excel needed and the values are not embedded in this HTML.</div>
+<div class="small" style="margin-bottom:10px">Load a small local JSON update file. No Excel needed and the values are not embedded in this HTML. Bybit EUR is treated as operational buffer.</div>
 <div class="actions">
   <input id="balanceUpdateFile" type="file" accept=".json,application/json" style="display:none">
   <button onclick="document.getElementById('balanceUpdateFile').click()">Load Balance Update</button>
@@ -107,6 +107,7 @@
 <tr><td>ING current</td><td><input id="ingCurrent" type="number" step="0.01"></td></tr>
 <tr><td>ING savings</td><td><input id="ingSavings" type="number" step="0.01"></td></tr>
 <tr><td>USDC (EUR value)</td><td><input id="usdc" type="number" step="0.01"></td></tr>
+<tr><td>Bybit EUR</td><td><input id="bybitEur" type="number" step="0.01"></td></tr>
 <tr><td>BTC holdings</td><td><input id="btcHoldings" type="number" step="0.00000001"></td></tr>
 </tbody></table>
 <div class="actions"><button onclick="saveState()">Save values</button><button onclick="refreshPrice()">Refresh BTC price</button><button onclick="saveSnapshot()">Save snapshot</button></div>
@@ -123,11 +124,11 @@
   </details>
 </div>
 
-<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel and private JSON balance updates are processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback. USD/JPY/IDR views use live EUR FX rates; EUR remains the accounting base.</div>
+<div class="footer">Privacy-safe build. Policy: 65/35 equilibrium, 60/40 deployment gate, 20K strategic reserve milestone. Bybit EUR is classified as operational buffer. Update controls are hidden by default; no portfolio balances are embedded in this source file. Excel and private JSON balance updates are processed client-side in your browser; imported values are stored only in this browser via localStorage. BTC price uses CoinGecko first with Coinbase fallback. USD/JPY/IDR views use live EUR FX rates; EUR remains the accounting base.</div>
 </div>
 
 <script>
-const defaults={btcHoldings:0,revolut:0,ingCurrent:0,ingSavings:0,usdc:0,fallbackPrice:0};
+const defaults={btcHoldings:0,revolut:0,ingCurrent:0,ingSavings:0,usdc:0,bybitEur:0,fallbackPrice:0};
 let state=JSON.parse(localStorage.getItem("portfolioState_v2")||"null")||{...defaults};let btcPrice=state.fallbackPrice||0;
 let fxRates={USD:null,JPY:null,IDR:null};let fxUpdated=null;
 function fmt(n,d=2){return Number(n).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
@@ -145,11 +146,11 @@ function updateFXDisplay(total){
   idrRateMeta.textContent=fxRates.IDR?("1 EUR = "+Math.round(fxRates.IDR).toLocaleString("id-ID")+" IDR"+stamp):"Live EUR/IDR";
 }
 
-function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.btcHoldings=+btcHoldings.value||0}
-function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;btcHoldings.value=state.btcHoldings}
+function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.bybitEur=+bybitEur.value||0;state.btcHoldings=+btcHoldings.value||0}
+function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;bybitEur.value=state.bybitEur||0;btcHoldings.value=state.btcHoldings}
 function calc(){
   readInputs();
-  const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;
+  const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc+(state.bybitEur||0);
   const asset=state.btcHoldings*btcPrice;
   const total=asset+buffer;
   const ap=total?asset/total*100:0;
@@ -250,7 +251,7 @@ async function fetchCoinGecko(){const r=await fetch("https://api.coingecko.com/a
 async function fetchCoinbase(){const r=await fetch("https://api.coinbase.com/v2/prices/BTC-EUR/spot",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.data.amount}
 async function refreshPrice(){priceSource.textContent="Refreshing…";try{btcPrice=await fetchCoinGecko();priceSource.textContent="CoinGecko • "+new Date().toLocaleTimeString()}catch(e1){try{btcPrice=await fetchCoinbase();priceSource.textContent="Coinbase fallback • "+new Date().toLocaleTimeString()}catch(e2){priceSource.textContent="Live fetch failed • using last saved price"}}state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));calc()}
 function addSalary(){const x=+salaryAdd.value||0;if(!x)return;state.revolut+=x;revolut.value=state.revolut.toFixed(2);salaryAdd.value="";saveState()}
-function saveSnapshot(){readInputs();const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc;const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");snaps.push({timestamp:new Date().toISOString(),btcPrice,btcHoldings:state.btcHoldings,asset,buffer,total,assetPct:total?asset/total*100:0,bufferPct:total?buffer/total*100:0});localStorage.setItem("portfolioSnapshots",JSON.stringify(snaps));lastSaved.textContent="Snapshot saved: "+new Date().toLocaleString()}
+function saveSnapshot(){readInputs();const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc+(state.bybitEur||0);const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");snaps.push({timestamp:new Date().toISOString(),btcPrice,btcHoldings:state.btcHoldings,asset,buffer,total,assetPct:total?asset/total*100:0,bufferPct:total?buffer/total*100:0});localStorage.setItem("portfolioSnapshots",JSON.stringify(snaps));lastSaved.textContent="Snapshot saved: "+new Date().toLocaleString()}
 function exportSnapshots(){const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");if(!snaps.length){alert("No snapshots saved yet.");return}const header=["timestamp","btcPrice","btcHoldings","asset","buffer","total","assetPct","bufferPct"];const rows=[header.join(",")].concat(snaps.map(s=>header.map(k=>s[k]).join(",")));const blob=new Blob([rows.join("\n")],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="portfolio_snapshots.csv";a.click();URL.revokeObjectURL(a.href)}
 function resetDefaults(){if(!confirm("Reset saved dashboard values to defaults?"))return;state={...defaults};localStorage.setItem("portfolioState_v2",JSON.stringify(state));populateInputs();calc();refreshPrice()}
 
@@ -261,7 +262,7 @@ async function loadBalanceUpdateFile(file){
   try{
     const data=JSON.parse(await file.text());
     const b=data.balances || data;
-    const required=["revolut","ingCurrent","ingSavings","usdc","btcHoldings"];
+    const required=["revolut","ingCurrent","ingSavings","usdc","bybitEur","btcHoldings"];
     for(const k of required){
       if(typeof b[k]!=="number" || !Number.isFinite(b[k])) throw new Error("Invalid or missing "+k);
     }
@@ -269,6 +270,7 @@ async function loadBalanceUpdateFile(file){
     state.ingCurrent=b.ingCurrent;
     state.ingSavings=b.ingSavings;
     state.usdc=b.usdc;
+    state.bybitEur=b.bybitEur;
     state.btcHoldings=b.btcHoldings;
     localStorage.setItem("portfolioState_v2",JSON.stringify(state));
     populateInputs();
@@ -342,17 +344,19 @@ async function loadExcelFile(file){
     const ingCur = numFromText(notes,"ING current");
     const ingSav = numFromText(notes,"ING savings");
     const usdcVal = numFromText(notes,"USDC");
+    const bybitEurVal = numFromText(notes,"Bybit EUR");
 
     if(totalBtc!==null) state.btcHoldings=totalBtc;
     if(rev!==null) state.revolut=rev;
     if(ingCur!==null) state.ingCurrent=ingCur;
     if(ingSav!==null) state.ingSavings=ingSav;
     if(usdcVal!==null) state.usdc=usdcVal;
+    if(bybitEurVal!==null) state.bybitEur=bybitEurVal;
 
     // Fallback if Notes does not include bucket details: preserve total Cash
     // by putting the difference into Revolut.
     const cashCell = Number(row["Cash (EUR)"] ?? row["Cash"] ?? NaN);
-    const parsedBuffer=[state.revolut,state.ingCurrent,state.ingSavings,state.usdc].reduce((a,b)=>a+(+b||0),0);
+    const parsedBuffer=[state.revolut,state.ingCurrent,state.ingSavings,state.usdc,state.bybitEur].reduce((a,b)=>a+(+b||0),0);
     if(Number.isFinite(cashCell) && Math.abs(parsedBuffer-cashCell)>0.02){
       state.revolut += cashCell-parsedBuffer;
     }
@@ -380,7 +384,7 @@ document.getElementById("balanceUpdateFile").addEventListener("change", e=>{
   e.target.value="";
 });
 
-["revolut","ingCurrent","ingSavings","usdc","btcHoldings"].forEach(id=>document.getElementById(id).addEventListener("input",calc));
+["revolut","ingCurrent","ingSavings","usdc","bybitEur","btcHoldings"].forEach(id=>document.getElementById(id).addEventListener("input",calc));
 populateInputs();calc();refreshPrice();refreshFX();setInterval(refreshPrice,60000);setInterval(refreshFX,300000);
 </script>
 </body>
