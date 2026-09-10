@@ -3,642 +3,250 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio Cockpit V2.0</title>
+<title>Portfolio Cockpit V2.2 RC1</title>
 <style>
-:root{--btcAccent:#f7931a;--eurAccent:#2dd4bf;--fxAccent:#4cc9f0;--portfolioAccent:#2dd4bf;--bg:#0f1115;--panel:#171a20;--panel2:#1d2128;--text:#f4f6f8;--muted:#9aa4b2;--line:#2b313a;--good:#47d18c;--warn:#f4c95d;--bad:#ff6b6b;--blue:#5aa9ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:1080px;margin:0 auto;padding:24px}h1{margin:0 0 6px;font-size:28px}.sub{color:var(--muted);margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px}.label{font-size:13px;color:var(--muted);margin-bottom:6px}.value{font-size:28px;font-weight:750;letter-spacing:-.4px}.small{font-size:13px;color:var(--muted);margin-top:5px}.section{margin-top:16px}
-.fxGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-.fxCard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.fxValue{font-size:23px;font-weight:750;letter-spacing:-.3px}
-.fxMeta{font-size:12px;color:var(--muted);margin-top:5px}
-@media(max-width:820px){.fxGrid{grid-template-columns:1fr}}.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}.ratioRow{display:flex;justify-content:space-between;gap:12px;margin-bottom:10px}.bar{height:18px;border-radius:999px;background:#242932;overflow:hidden;border:1px solid var(--line)}.fill{height:100%;width:60%;background:var(--btcAccent);transition:width .35s}.target{position:relative;height:14px}.target:after{content:"60–65% operating band";position:absolute;left:62.5%;transform:translateX(-50%);top:2px;color:var(--muted);font-size:11px}.status{font-weight:700}.status.good{color:var(--good)}.status.warn{color:var(--warn)}.status.bad{color:var(--bad)}.capCard.good{border-color:rgba(71,209,140,.65);box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.capCard.warn{border-color:rgba(244,201,93,.65);box-shadow:0 0 0 1px rgba(244,201,93,.08) inset}.capCard.bad{border-color:rgba(255,107,107,.65);box-shadow:0 0 0 1px rgba(255,107,107,.08) inset}.capValue.good{color:var(--good)}.capValue.warn{color:var(--warn)}.capValue.bad{color:var(--bad)}table{width:100%;border-collapse:collapse}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;color:var(--muted);font-weight:600}td input,.inline input{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 10px}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inline input{width:150px}.footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.5}
-.maintenance{margin-top:16px}
-.maintenance details{background:transparent}
-.maintenance summary{
-  list-style:none;cursor:pointer;user-select:none;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  width:max-content;margin:0 auto;
-  background:var(--panel);border:1px solid var(--line);
-  color:var(--muted);border-radius:12px;padding:9px 14px;
-  font-size:13px;font-weight:650
+:root{
+  --bg:#0d1014;--panel:#15191f;--panel2:#1b2028;--line:#2a313b;--text:#f4f6f8;--muted:#91a0b2;
+  --btc:#f7931a;--eur:#2dd4bf;--fx:#4cc9f0;--good:#47d18c;--warn:#f4c95d;--bad:#ff6b6b;--blue:#5aa9ff;
 }
-.maintenance summary::-webkit-details-marker{display:none}
-.maintenance summary:after{content:"▾";font-size:12px;transition:transform .2s}
-.maintenance details[open] summary:after{transform:rotate(180deg)}
-.maintenance details[open] summary{color:var(--text)}
-.maintenanceBody{margin-top:12px}
-@media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:520px){.wrap{padding:14px}.grid{grid-template-columns:1fr}.value{font-size:24px}}
-
-/* Semantic cockpit accents */
-#btcPrice, #btcHoldingsView, #assetValue, #btcValue, #btcAssetValue, #btcEurValue, .btcAccent {
-  color: var(--btcAccent) !important;
-}
-
-/* EUR is the accounting/home currency. */
-#totalPortfolio, #totalValue, #portfolioTotal, #bufferValue, .portfolioAccent, .eurAccent {
-  color: var(--eurAccent) !important;
-}
-
-/* FX views are intentionally kept separate from EUR primary. */
-#totalUSD, #totalJPY, #totalIDR, .fxAccent {
-  color: var(--fxAccent) !important;
-}
-
-
-/* V2.0 state + reconciliation layer */
-.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:22px 0 10px}
-.sectionTitle{font-size:15px;font-weight:800;letter-spacing:.02em}.sectionHint{font-size:12px;color:var(--muted)}
-.stateGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stateRows{display:grid;grid-template-columns:1fr;gap:0;margin-top:4px}
-.stateRow,.auditRow,.flowRow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
-.stateRow:last-child,.auditRow:last-child,.flowRow:last-child{border-bottom:0}
-.stateName,.auditName,.flowName{font-size:13px;color:var(--muted)}
-.stateVal,.auditVal,.flowVal{font-weight:750;text-align:right}.btcVal{color:var(--btcAccent)}.eurVal{color:var(--eurAccent)}.fxVal{color:var(--fxAccent)}
-.reconCard{padding:0;overflow:hidden}.reconTop{padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
-.reconBody{padding:8px 16px 14px}.badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--panel2);border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;letter-spacing:.03em;white-space:nowrap}.badge.good{color:var(--good);border-color:rgba(71,209,140,.5)}.badge.warn{color:var(--warn);border-color:rgba(244,201,93,.5)}.badge.bad{color:var(--bad);border-color:rgba(255,107,107,.5)}.badge.muted{color:var(--muted)}
-.auditGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.auditMini{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}.auditMini .label{margin-bottom:5px}.auditMini .auditMetric{font-weight:800;font-size:14px}
-.auditNote{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}.auditNote strong{color:var(--text)}
-.flowCard{display:grid;grid-template-columns:1.1fr 1fr;gap:16px}.flowPlaceholder{min-height:130px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;line-height:1.55;background:var(--panel2);border:1px dashed var(--line);border-radius:12px;padding:18px}
-.loaderLine{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.dateInput{width:170px!important}
-@media(max-width:820px){.stateGrid,.flowCard{grid-template-columns:1fr}.auditGrid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:520px){.auditGrid{grid-template-columns:1fr}.sectionHead{align-items:start;flex-direction:column;gap:3px}}
-
-
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:24px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);font-size:13px;line-height:1.5}.chipRow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chip,.badge{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;letter-spacing:.04em}
+.chip.good,.badge.good{color:var(--good);border-color:rgba(71,209,140,.38)}.chip.warn,.badge.warn{color:var(--warn);border-color:rgba(244,201,93,.38)}.chip.bad,.badge.bad{color:var(--bad);border-color:rgba(255,107,107,.38)}.chip.muted,.badge.muted{color:var(--muted)}
+.controls{display:flex;gap:8px;flex-wrap:wrap}.btn,.fileBtn{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer;font:inherit;font-size:12px}.btn:hover,.fileBtn:hover{background:var(--panel2)}input[type=file]{display:none}
+.statusLine{margin-top:14px;padding:10px 12px;border:1px solid var(--line);background:rgba(255,255,255,.015);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.45}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}.fxGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:12px;margin-top:12px}.twoEq{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:15px;min-width:0}.label{font-size:11px;color:var(--muted);margin-bottom:6px}.value{font-size:27px;font-weight:780;letter-spacing:-.4px}.value.btc{color:var(--btc)}.value.eur{color:var(--eur)}.value.fx{color:var(--fx)}.small{font-size:11px;color:var(--muted);line-height:1.45;margin-top:5px}
+.sectionHead{display:flex;justify-content:space-between;gap:12px;align-items:end;margin-top:20px;margin-bottom:8px}.sectionTitle{font-size:13px;font-weight:850;letter-spacing:.03em}.sectionHint{font-size:10px;color:var(--muted);margin-top:3px}.sectionMeta{font-size:10px;color:var(--muted)}
+.ratioTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.ratio{font-size:25px;font-weight:800}.bar{height:15px;border-radius:999px;background:#232a33;border:1px solid var(--line);overflow:hidden;margin-top:12px}.fill{height:100%;width:0;background:var(--btc);transition:width .25s}.band{position:relative;height:18px}.band:after{content:"60–65% operating band";position:absolute;left:62.5%;top:3px;transform:translateX(-50%);font-size:10px;color:var(--muted);white-space:nowrap}
+.actionCard.good{border-color:rgba(71,209,140,.55)}.actionCard.warn{border-color:rgba(244,201,93,.55)}.actionCard.bad{border-color:rgba(255,107,107,.55)}.actionValue{font-size:26px;font-weight:800;margin:4px 0}.actionValue.good{color:var(--good)}.actionValue.warn{color:var(--warn)}.actionValue.bad{color:var(--bad)}
+.metricRow{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);align-items:baseline}.metricRow:last-child{border-bottom:0}.metricName{font-size:11px;color:#b8c4d2}.metricVal{font-size:12px;font-weight:750;text-align:right}.metricVal.btc{color:var(--btc)}.metricVal.eur{color:var(--eur)}
+.auditTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.auditHeadline{font-size:17px;font-weight:800}.auditGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.auditMini{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px}.auditMetric{font-size:12px;font-weight:750}.note{margin-top:11px;padding:10px 11px;border-left:3px solid var(--warn);background:var(--panel2);border-radius:8px;color:var(--muted);font-size:11px;line-height:1.5}
+.flowState{display:flex;align-items:center;justify-content:center;min-height:130px;text-align:center;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:11px;line-height:1.55;padding:18px}.flowRows .metricRow{padding:8px 0}
+.footer{margin:18px 0 4px;color:var(--muted);font-size:10px;line-height:1.55}.privacy{color:#7f8b99}.offline{color:var(--warn)!important}
+@media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.two,.twoEq{grid-template-columns:1fr}.auditGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.wrap{padding:14px}.grid4,.fxGrid{grid-template-columns:1fr}.value{font-size:24px}.auditGrid{grid-template-columns:1fr}.controls{width:100%}.btn,.fileBtn{flex:1;text-align:center}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div class="wrap">
-<h1>Portfolio Cockpit V2.0</h1>
-<div class="sub">Weekly state cockpit • 65/35 working equilibrium • optional monthly Operations reconciliation.</div>
-
-<div class="grid">
-<div class="card"><div class="label">BTC price (live)</div><div class="value" id="btcPrice">—</div><div class="small" id="priceSource">Loading…</div></div>
-<div class="card"><div class="label">BTC holdings</div><div class="value" id="btcHoldingsView">0.00000000</div><div class="small" id="satsView">0 sats</div></div>
-<div class="card"><div class="label">BTC asset value</div><div class="value" id="assetValue">—</div><div class="small">Dynamic with BTC price</div></div>
-<div class="card"><div class="label">Total portfolio · EUR</div><div class="value portfolioAccent eurAccent" id="totalValue">—</div><div class="small">BTC + buffer</div></div>
-</div>
-
-<div class="fxGrid">
-  <div class="fxCard"><div class="label">Total portfolio · USD</div><div class="fxValue fxAccent" id="totalUSD">—</div><div class="fxMeta" id="usdRateMeta">Live EUR/USD</div></div>
-  <div class="fxCard"><div class="label">Total portfolio · JPY</div><div class="fxValue fxAccent" id="totalJPY">—</div><div class="fxMeta" id="jpyRateMeta">Live EUR/JPY</div></div>
-  <div class="fxCard"><div class="label">Total portfolio · IDR</div><div class="fxValue fxAccent" id="totalIDR">—</div><div class="fxMeta" id="idrRateMeta">Live EUR/IDR</div></div>
-</div>
-
-<div class="two section">
-<div class="card">
-<div class="ratioRow"><div><div class="label">Asset / Buffer thermometer</div><div class="value" style="font-size:24px"><span id="assetPct">—</span> / <span id="bufferPct">—</span></div></div><div style="text-align:right"><div class="label">New BTC exposure</div><div id="gateStatus" class="status">—</div></div></div>
-<div class="bar"><div class="fill" id="ratioFill"></div></div><div class="target"></div><div class="small" id="ratioNote"></div>
-</div>
-<div class="card capCard" id="capCard">
-<div class="label" id="capLabel">Exposure capacity</div>
-<div class="value capValue" id="capValue">—</div>
-<div class="small" id="capText">—</div>
-</div>
-</div>
-
-<div class="sectionHead">
-  <div><div class="sectionTitle">ASSET STATE</div><div class="sectionHint">Weekly state truth • native units first, valuation second.</div></div>
-  <div class="sectionHint" id="snapshotMeta">Snapshot date: not set</div>
-</div>
-<div class="stateGrid">
-  <div class="card">
-    <div class="label">BTC custody</div>
-    <div class="stateRows">
-      <div class="stateRow"><span class="stateName">Trezor BTC</span><span class="stateVal btcVal" id="stateBtcTrezor">—</span></div>
-      <div class="stateRow"><span class="stateName">Bybit BTC</span><span class="stateVal btcVal" id="stateBtcBybit">—</span></div>
-      <div class="stateRow"><span class="stateName">Total BTC</span><span class="stateVal btcVal" id="stateBtcTotal">0.00000000 BTC</span></div>
-    </div>
-    <div class="small" id="custodyNote">Custody split is optional; legacy total-BTC snapshots remain supported.</div>
-  </div>
-  <div class="card">
-    <div class="label">Operational liquidity</div>
-    <div class="stateRows">
-      <div class="stateRow"><span class="stateName">Revolut</span><span class="stateVal eurVal" id="stateRevolut">€0.00</span></div>
-      <div class="stateRow"><span class="stateName">ING current</span><span class="stateVal eurVal" id="stateIngCurrent">€0.00</span></div>
-      <div class="stateRow"><span class="stateName">ING savings</span><span class="stateVal eurVal" id="stateIngSavings">€0.00</span></div>
-      <div class="stateRow"><span class="stateName">Bybit EUR</span><span class="stateVal eurVal" id="stateBybitEur">€0.00</span></div>
-      <div class="stateRow"><span class="stateName">USDC · EUR value</span><span class="stateVal eurVal" id="stateUsdcEur">€0.00</span></div>
-    </div>
-  </div>
-</div>
-
-<div class="sectionHead">
-  <div><div class="sectionTitle">TREASURY RECONCILIATION</div><div class="sectionHint">Optional cross-audit: Portfolio owns state; Operations owns flow.</div></div>
-</div>
-<div class="card reconCard">
-  <div class="reconTop">
+  <div class="top">
     <div>
-      <div class="label">Data integrity</div>
-      <div style="font-size:18px;font-weight:800" id="reconHeadline">Portfolio standalone</div>
-    </div>
-    <span class="badge muted" id="reconBadge">OPERATIONS NOT LOADED</span>
-  </div>
-  <div class="reconBody">
-    <div class="auditGrid">
-      <div class="auditMini"><div class="label">BTC ownership</div><div class="auditMetric" id="auditBtc">—</div></div>
-      <div class="auditMini"><div class="label">EUR cash</div><div class="auditMetric" id="auditCash">—</div></div>
-      <div class="auditMini"><div class="label">USDC</div><div class="auditMetric" id="auditUsdc">—</div></div>
-      <div class="auditMini"><div class="label">Custody</div><div class="auditMetric" id="auditCustody">—</div></div>
-    </div>
-    <div class="auditRow"><span class="auditName">Operations coverage</span><span class="auditVal" id="opsCoverage">—</span></div>
-    <div class="auditRow"><span class="auditName">Last full Operations month</span><span class="auditVal" id="opsLastFullMonth">—</span></div>
-    <div class="auditRow"><span class="auditName">Portfolio snapshot</span><span class="auditVal" id="auditPortfolioDate">—</span></div>
-    <div class="auditRow"><span class="auditName">Unexplained gap</span><span class="auditVal" id="auditGap">—</span></div>
-    <div class="auditNote" id="auditNote">Load an Operations JSON to enable temporal alignment and, when a month-end native-unit checkpoint is available, cross-audit. The Portfolio cockpit remains fully functional without it.</div>
-  </div>
-</div>
-
-<div class="sectionHead">
-  <div><div class="sectionTitle">FLOW vs MARKET</div><div class="sectionHint">Explains state change without calling every valuation move “profit”.</div></div>
-</div>
-<div class="card flowCard">
-  <div>
-    <div class="flowRow"><span class="flowName">Total portfolio change</span><span class="flowVal" id="flowTotalChange">—</span></div>
-    <div class="flowRow"><span class="flowName">Net external cashflow</span><span class="flowVal" id="flowCash">—</span></div>
-    <div class="flowRow"><span class="flowName">Market / FX valuation</span><span class="flowVal" id="flowMarket">—</span></div>
-    <div class="flowRow"><span class="flowName">Fees / friction</span><span class="flowVal" id="flowFees">—</span></div>
-    <div class="flowRow"><span class="flowName">Unexplained</span><span class="flowVal" id="flowGap">—</span></div>
-  </div>
-  <div class="flowPlaceholder" id="flowPlaceholder">Waiting for a matched reconciled checkpoint.<br>V2.0 will not invent a decomposition when the two cadences do not overlap cleanly.</div>
-</div>
-
-
-<div class="maintenance">
-  <details id="maintenancePanel">
-    <summary>Update Portfolio</summary>
-    <div class="maintenanceBody">
-      <div class="two">
-<div class="card">
-<div class="label">Excel sync</div>
-<div class="small" style="margin-bottom:10px">Load the latest row from the “Portfolio Snapshot” sheet. Balances are parsed from the Notes column when available.</div>
-<div class="actions">
-  <input id="excelFile" type="file" accept=".xlsx,.xls,.xlsm" style="display:none">
-  <button onclick="document.getElementById('excelFile').click()">Load Excel</button>
-  <span id="excelStatus" class="small">No file loaded yet.</span>
-</div>
-<div style="height:12px"></div>
-<div class="label">Private balance update</div>
-<div class="small" style="margin-bottom:10px">Load a local weekly Portfolio JSON. Legacy total-BTC files remain compatible; V2 snapshots may optionally include Bybit/Trezor BTC split and native USDC quantity. Bybit EUR remains operational buffer.</div>
-<div class="actions">
-  <input id="balanceUpdateFile" type="file" accept=".json,application/json" style="display:none">
-  <button onclick="document.getElementById('balanceUpdateFile').click()">Load Balance Update</button>
-  <span id="balanceUpdateStatus" class="small">No update file loaded yet.</span>
-</div>
-<div style="height:14px"></div>
-<div class="label">Optional Operations cross-audit</div>
-<div class="small" style="margin-bottom:10px">Load the private sanitized Operations JSON. This is read-only and session-only; it never becomes a dependency of the Portfolio state.</div>
-<div class="actions loaderLine">
-  <input id="operationsAuditFile" type="file" accept=".json,application/json" style="display:none">
-  <button onclick="document.getElementById('operationsAuditFile').click()">Load Operations JSON</button>
-  <button onclick="clearOperationsAudit()">Clear audit session</button>
-  <span id="operationsAuditStatus" class="small">Not loaded.</span>
-</div>
-<div style="height:14px"></div>
-<div class="label">Weekly snapshot date</div>
-<div class="small" style="margin-bottom:8px">Used only as audit metadata. It does not change balances or valuation.</div>
-<div class="inline"><input id="snapshotAsOfInput" class="dateInput" type="date"></div>
-<div style="height:14px"></div>
-<div class="label" style="margin-bottom:10px">Balances</div>
-<table><thead><tr><th>Bucket</th><th>Value</th></tr></thead><tbody>
-<tr><td>Revolut</td><td><input id="revolut" type="number" step="0.01"></td></tr>
-<tr><td>ING current</td><td><input id="ingCurrent" type="number" step="0.01"></td></tr>
-<tr><td>ING savings</td><td><input id="ingSavings" type="number" step="0.01"></td></tr>
-<tr><td>USDC (EUR value)</td><td><input id="usdc" type="number" step="0.01"></td></tr>
-<tr><td>Bybit EUR</td><td><input id="bybitEur" type="number" step="0.01"></td></tr>
-<tr><td>BTC holdings</td><td><input id="btcHoldings" type="number" step="0.00000001"></td></tr>
-</tbody></table>
-<div class="actions"><button onclick="saveState()">Save values</button><button onclick="refreshPrice()">Refresh BTC price</button><button onclick="saveSnapshot()">Save snapshot</button></div>
-</div>
-
-<div class="card">
-<div class="label">Quick payday update</div><div class="small" style="margin-bottom:10px">Add salary/surplus to Revolut, then edit actual balances later if needed.</div>
-<div class="inline"><input id="salaryAdd" type="number" step="0.01" placeholder="e.g. 1000"><button onclick="addSalary()">Add to buffer</button></div>
-<div style="height:14px"></div><div class="label">Current buffer · EUR</div><div class="value eurAccent" id="bufferValue">—</div><div class="small" id="lastSaved">—</div>
-<div class="actions"><button onclick="exportSnapshots()">Export snapshots CSV</button><button onclick="resetDefaults()">Reset defaults</button></div>
-</div>
+      <h1>Portfolio Cockpit V2.2 RC1</h1>
+      <div class="sub">Weekly state cockpit • Wednesday cadence • Portfolio owns state • Operations audit is read-only.</div>
+      <div class="chipRow">
+        <span class="chip muted" id="weeklyChip">WEEKLY JSON NOT LOADED</span>
+        <span class="chip muted" id="auditChip">OPERATIONS AUDIT NOT LOADED</span>
+        <span class="chip muted" id="modeChip">LOCAL PREVIEW</span>
       </div>
     </div>
-  </details>
-</div>
+    <div class="controls">
+      <button class="btn" id="reloadBtn">Reload package data</button>
+      <label class="fileBtn">Load Weekly JSON<input id="weeklyFile" type="file" accept=".json,application/json"></label>
+      <label class="fileBtn">Load Audit JSON<input id="auditFile" type="file" accept=".json,application/json"></label>
+    </div>
+  </div>
 
-<div class="footer">Privacy-safe V2.0 build. Portfolio remains the weekly state/valuation source of truth; Operations remains the monthly flow source of truth. Cross-audit is optional, read-only, and session-only. No portfolio or Operations balances are embedded in this HTML. Portfolio state may be stored locally in this browser; loaded Operations data is not persisted. Native units are preferred for reconciliation so market-price movement cannot create a false accounting mismatch.</div>
-</div>
+  <div class="statusLine" id="statusLine">Starting cockpit…</div>
 
+  <div class="grid4">
+    <div class="card"><div class="label">BTC price · live / fallback</div><div class="value btc" id="btcPrice">—</div><div class="small" id="priceMeta">Waiting for weekly data…</div></div>
+    <div class="card"><div class="label">BTC holdings</div><div class="value btc" id="btcHoldings">—</div><div class="small" id="satsMeta">Native units first.</div></div>
+    <div class="card"><div class="label">BTC asset value</div><div class="value btc" id="assetValue">—</div><div class="small">Dynamic with BTC price.</div></div>
+    <div class="card"><div class="label">Total portfolio · EUR</div><div class="value eur" id="portfolioEur">—</div><div class="small">BTC + operational buffer.</div></div>
+  </div>
+
+  <div class="fxGrid">
+    <div class="card"><div class="label">Total portfolio · USD</div><div class="value fx" id="portfolioUsd">—</div><div class="small" id="usdMeta">FX waiting.</div></div>
+    <div class="card"><div class="label">Total portfolio · JPY</div><div class="value fx" id="portfolioJpy">—</div><div class="small" id="jpyMeta">FX waiting.</div></div>
+    <div class="card"><div class="label">Total portfolio · IDR</div><div class="value fx" id="portfolioIdr">—</div><div class="small" id="idrMeta">FX waiting.</div></div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="ratioTop"><div><div class="label">Asset / Buffer thermometer</div><div class="ratio" id="ratioText">— / —</div></div><div style="text-align:right"><div class="label">New BTC exposure</div><div class="metricVal" id="exposureText">—</div></div></div>
+      <div class="bar"><div class="fill" id="ratioFill"></div></div><div class="band"></div>
+      <div class="small" id="ratioNote">Load the weekly state to activate the allocation gate.</div>
+    </div>
+    <div class="card actionCard" id="actionCard">
+      <div class="label" id="actionLabel">BALANCE-SHEET STATUS</div>
+      <div class="actionValue" id="actionValue">—</div>
+      <div class="small" id="actionText">Waiting for weekly state.</div>
+    </div>
+  </div>
+
+  <div class="sectionHead"><div><div class="sectionTitle">ASSET STATE</div><div class="sectionHint">Weekly state truth • native units first, valuation second.</div></div><div class="sectionMeta" id="snapshotMeta">Snapshot: —</div></div>
+  <div class="twoEq">
+    <div class="card">
+      <div class="label">BTC custody</div>
+      <div class="metricRow"><span class="metricName">Trezor BTC</span><span class="metricVal btc" id="trezorBtc">—</span></div>
+      <div class="metricRow"><span class="metricName">Bybit BTC</span><span class="metricVal btc" id="bybitBtc">—</span></div>
+      <div class="metricRow"><span class="metricName">Total BTC</span><span class="metricVal btc" id="totalBtcRow">—</span></div>
+      <div class="small" id="custodyNote">Custody split will reconcile from the weekly JSON.</div>
+    </div>
+    <div class="card">
+      <div class="label">Operational liquidity</div>
+      <div class="metricRow"><span class="metricName">Revolut</span><span class="metricVal eur" id="revolut">—</span></div>
+      <div class="metricRow"><span class="metricName">ING current</span><span class="metricVal eur" id="ingCurrent">—</span></div>
+      <div class="metricRow"><span class="metricName">ING savings</span><span class="metricVal eur" id="ingSavings">—</span></div>
+      <div class="metricRow"><span class="metricName">Bybit EUR</span><span class="metricVal eur" id="bybitEur">—</span></div>
+      <div class="metricRow"><span class="metricName">USDC · EUR value</span><span class="metricVal eur" id="usdcEur">—</span></div>
+    </div>
+  </div>
+
+  <div class="sectionHead"><div><div class="sectionTitle">TREASURY RECONCILIATION</div><div class="sectionHint">Operations validates flow/source coverage; Portfolio remains the only owner of weekly state.</div></div></div>
+  <div class="card">
+    <div class="auditTop"><div><div class="label">Audit state</div><div class="auditHeadline" id="auditHeadline">Portfolio standalone</div></div><span class="badge muted" id="auditBadge">OPERATIONS NOT LOADED</span></div>
+    <div class="auditGrid">
+      <div class="auditMini"><div class="label">Operations coverage</div><div class="auditMetric" id="auditCoverage">—</div></div>
+      <div class="auditMini"><div class="label">Last full Ops month</div><div class="auditMetric" id="auditFullMonth">—</div></div>
+      <div class="auditMini"><div class="label">Portfolio snapshot</div><div class="auditMetric" id="auditSnapshot">—</div></div>
+      <div class="auditMini"><div class="label">Native checkpoint</div><div class="auditMetric" id="auditCheckpoint">—</div></div>
+    </div>
+    <div class="metricRow"><span class="metricName">Operations source revision</span><span class="metricVal" id="auditRevision">—</span></div>
+    <div class="metricRow"><span class="metricName">Flow bridge</span><span class="metricVal" id="auditFlowBridge">—</span></div>
+    <div class="metricRow"><span class="metricName">Unexplained gap</span><span class="metricVal" id="auditGap">Not computed</span></div>
+    <div class="note" id="auditNote">No Operations audit loaded. This does not block Portfolio valuation or allocation.</div>
+  </div>
+
+  <div class="sectionHead"><div><div class="sectionTitle">WEEKLY FLOW</div><div class="sectionHint">Explains portfolio change only when a prior weekly checkpoint exists.</div></div></div>
+  <div class="twoEq">
+    <div class="card flowRows">
+      <div class="metricRow"><span class="metricName">Current weekly checkpoint</span><span class="metricVal" id="flowCurrent">—</span></div>
+      <div class="metricRow"><span class="metricName">Prior weekly checkpoint</span><span class="metricVal" id="flowPrior">Not loaded</span></div>
+      <div class="metricRow"><span class="metricName">Total portfolio change</span><span class="metricVal">—</span></div>
+      <div class="metricRow"><span class="metricName">Net external cashflow</span><span class="metricVal">—</span></div>
+      <div class="metricRow"><span class="metricName">Market / FX valuation</span><span class="metricVal">—</span></div>
+    </div>
+    <div class="card"><div class="flowState">This package intentionally ships only the latest canonical Wednesday state.<br><br>Flow decomposition stays locked until a prior weekly checkpoint and explicit bridge evidence exist. No market P&amp;L is invented.</div></div>
+  </div>
+
+  <div class="footer">
+    <span class="privacy">Public-safe shell:</span> this HTML contains no embedded personal balance telemetry and stores nothing in localStorage. The packaged <code>private/</code> JSON files are for local testing only and are excluded by <code>.gitignore</code>. Operations Dashboard remains a separate accounting cockpit; Portfolio only accepts the small read-only audit sidecar.
+  </div>
+</div>
 <script>
-const defaults={btcHoldings:0,revolut:0,ingCurrent:0,ingSavings:0,usdc:0,bybitEur:0,fallbackPrice:0,snapshotAsOf:"",btcBybit:null,btcTrezor:null,usdcAmount:null};
-let state=JSON.parse(localStorage.getItem("portfolioState_v2")||"null")||{...defaults};
-state={...defaults,...state};
-let btcPrice=state.fallbackPrice||0;
-let fxRates={USD:null,JPY:null,IDR:null};let fxUpdated=null;
-let operationsData=null;
-function fmt(n,d=2){return Number(n).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
-function pct(n){return fmt(n,1)+"%"}
-function moneyUSD(n){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}
-function moneyJPY(n){return new Intl.NumberFormat("ja-JP",{style:"currency",currency:"JPY",maximumFractionDigits:0}).format(n)}
-function moneyIDR(n){return new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n)}
-function moneyEUR(n){return new Intl.NumberFormat(undefined,{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)}
-function isoDateLocal(d=new Date()){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${day}`}
-function monthEndIso(ym){if(!/^\d{4}-\d{2}$/.test(ym||""))return null;const [y,m]=ym.split("-").map(Number);return new Date(y,m,0).toISOString().slice(0,10)}
-function sameDate(a,b){return !!a&&!!b&&String(a).slice(0,10)===String(b).slice(0,10)}
-function setBadge(el,text,kind="muted"){el.textContent=text;el.className="badge "+kind}
-function nativeBtcTotal(){
-  if(state.btcBybit!==null&&state.btcTrezor!==null&&Number.isFinite(Number(state.btcBybit))&&Number.isFinite(Number(state.btcTrezor))) return Number(state.btcBybit)+Number(state.btcTrezor);
-  return Number(state.btcHoldings)||0;
-}
-function currentEurCash(){return (Number(state.revolut)||0)+(Number(state.ingCurrent)||0)+(Number(state.ingSavings)||0)+(Number(state.bybitEur)||0)}
+"use strict";
+const $=id=>document.getElementById(id);
+let weekly=null,audit=null,btcPrice=null,fx=null;
+let weeklySource="none",auditSource="none";
 
-function updateFXDisplay(total){
-  totalUSD.textContent=fxRates.USD?moneyUSD(total*fxRates.USD):"—";
-  totalJPY.textContent=fxRates.JPY?moneyJPY(total*fxRates.JPY):"—";
-  totalIDR.textContent=fxRates.IDR?moneyIDR(total*fxRates.IDR):"—";
-  const stamp=fxUpdated?(" • "+fxUpdated.toLocaleTimeString()):"";
-  usdRateMeta.textContent=fxRates.USD?("1 EUR = "+fmt(fxRates.USD,4)+" USD"+stamp):"Live EUR/USD";
-  jpyRateMeta.textContent=fxRates.JPY?("1 EUR = "+fmt(fxRates.JPY,2)+" JPY"+stamp):"Live EUR/JPY";
-  idrRateMeta.textContent=fxRates.IDR?("1 EUR = "+Math.round(fxRates.IDR).toLocaleString("id-ID")+" IDR"+stamp):"Live EUR/IDR";
-}
+const isNum=v=>typeof v==="number"&&Number.isFinite(v);
+const eur=n=>isNum(n)?new Intl.NumberFormat("nl-NL",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2}).format(n):"—";
+const usd=n=>isNum(n)?new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(n):"—";
+const jpy=n=>isNum(n)?new Intl.NumberFormat("ja-JP",{style:"currency",currency:"JPY",maximumFractionDigits:0}).format(n):"—";
+const idr=n=>isNum(n)?new Intl.NumberFormat("id-ID",{style:"currency",currency:"IDR",maximumFractionDigits:0}).format(n):"—";
+const btc=n=>isNum(n)?n.toFixed(8)+" BTC":"—";
+const pct=n=>isNum(n)?n.toFixed(1)+"%":"—";
 
-function readInputs(){state.revolut=+revolut.value||0;state.ingCurrent=+ingCurrent.value||0;state.ingSavings=+ingSavings.value||0;state.usdc=+usdc.value||0;state.bybitEur=+bybitEur.value||0;state.btcHoldings=+btcHoldings.value||0;state.snapshotAsOf=snapshotAsOfInput.value||state.snapshotAsOf||""}
-function populateInputs(){revolut.value=state.revolut;ingCurrent.value=state.ingCurrent;ingSavings.value=state.ingSavings;usdc.value=state.usdc;bybitEur.value=state.bybitEur||0;btcHoldings.value=state.btcHoldings;snapshotAsOfInput.value=state.snapshotAsOf||""}
-function calc(){
-  readInputs();
-  const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc+(state.bybitEur||0);
-  const asset=state.btcHoldings*btcPrice;
-  const total=asset+buffer;
-  const ap=total?asset/total*100:0;
-  const bp=100-ap;
-
-  const equilibriumAsset=65/100;
-  const deployGateAsset=60/100;
-  const absoluteBufferMilestone=20000;
-
-  // Cash needed to return to 65/35, assuming no asset sale.
-  const equilibriumBufferTarget=asset*((1-equilibriumAsset)/equilibriumAsset);
-  const equilibriumBufferGap=Math.max(0,equilibriumBufferTarget-buffer);
-
-  // Deployable capacity only appears below 60/40.
-  const exposureCap=Math.max(0,deployGateAsset*total-asset);
-  const exposureCapPct=total?exposureCap/total*100:0;
-
-  document.getElementById("btcPrice").textContent=btcPrice>0?fmt(btcPrice):"—";
-  btcHoldingsView.textContent=state.btcHoldings.toFixed(8);
-  satsView.textContent=Math.round(state.btcHoldings*1e8).toLocaleString()+" sats";
-  assetValue.textContent=btcPrice>0?fmt(asset):"—";
-  bufferValue.textContent=fmt(buffer);
-  totalValue.textContent=btcPrice>0?fmt(total):fmt(buffer);
-  assetPct.textContent=total?pct(ap):"—";
-  bufferPct.textContent=total?pct(bp):"—";
-  ratioFill.style.width=Math.min(100,ap)+"%";
-  updateFXDisplay(total);
-
-  // V2.0 native-unit state view.
-  snapshotMeta.textContent="Snapshot date: "+(state.snapshotAsOf||"not set");
-  stateBtcTotal.textContent=(Number(state.btcHoldings)||0).toFixed(8)+" BTC";
-  const custodyKnown=state.btcBybit!==null&&state.btcTrezor!==null&&Number.isFinite(Number(state.btcBybit))&&Number.isFinite(Number(state.btcTrezor));
-  stateBtcBybit.textContent=custodyKnown?Number(state.btcBybit).toFixed(8)+" BTC":"—";
-  stateBtcTrezor.textContent=custodyKnown?Number(state.btcTrezor).toFixed(8)+" BTC":"—";
-  custodyNote.textContent=custodyKnown?"Custody split loaded; total BTC is reconciled from Bybit + Trezor.":"Custody split is optional; legacy total-BTC snapshots remain supported.";
-  stateRevolut.textContent=moneyEUR(state.revolut);
-  stateIngCurrent.textContent=moneyEUR(state.ingCurrent);
-  stateIngSavings.textContent=moneyEUR(state.ingSavings);
-  stateBybitEur.textContent=moneyEUR(state.bybitEur);
-  stateUsdcEur.textContent=moneyEUR(state.usdc);
-  renderReconciliation();
-
-  const capCard=document.getElementById("capCard");
-  const capValue=document.getElementById("capValue");
-  const capLabel=document.getElementById("capLabel");
-  const capText=document.getElementById("capText");
-  capCard.className="card capCard";
-  capValue.className="value capValue";
-
-  if(total===0 || btcPrice<=0){
-    capLabel.textContent="Balance-sheet status";
-    capValue.textContent="—";
-    capText.textContent="Load Excel or enter balances, then wait for the live BTC price.";
-  }else if(ap>65){
-    capCard.classList.add("warn");
-    capValue.classList.add("warn");
-    capLabel.textContent="BUFFER MODE";
-    capValue.textContent="+"+fmt(equilibriumBufferGap);
-    capText.textContent="Additional buffer to return to the 65/35 working equilibrium. No asset sale required.";
-  }else if(ap>=60){
-    capCard.classList.add("good");
-    capValue.classList.add("good");
-    capLabel.textContent="NORMAL OPERATING ZONE";
-    capValue.textContent="60–65%";
-    const reserveProgress=Math.min(100,buffer/absoluteBufferMilestone*100);
-    capText.textContent="No forced action. Strategic reserve: "+fmt(buffer)+" / "+fmt(absoluteBufferMilestone)+" ("+fmt(reserveProgress,1)+"%).";
-  }else{
-    capCard.classList.add("good");
-    capValue.classList.add("good");
-    capLabel.textContent="EXPOSURE CAP AVAILABLE";
-    capValue.textContent=fmt(exposureCap);
-    capText.textContent=fmt(exposureCapPct,1)+"% of portfolio available before reaching 60/40. Cap ≠ quota; deploy in patches if desired.";
-  }
-
-  gateStatus.className="status";
-  if(total===0 || btcPrice<=0){
-    gateStatus.textContent="—";
-    ratioNote.textContent="Load portfolio data to activate the thermometer.";
-  }else if(ap>65){
-    gateStatus.textContent="AMBER — buffer mode";
-    gateStatus.classList.add("warn");
-    ratioNote.textContent="Above 65% asset. Existing asset can run; new cashflow preferentially rebuilds reserve.";
-  }else if(ap>=60){
-    gateStatus.textContent="GREEN — normal zone";
-    gateStatus.classList.add("good");
-    ratioNote.textContent="Inside the 60–65% operating band. No allocation action is required.";
-  }else{
-    gateStatus.textContent="GREEN — deployment gate open";
-    gateStatus.classList.add("good");
-    ratioNote.textContent="Below 60% asset. Exposure capacity is available, subject to market structure and reserve discipline.";
-  }
-}
-async function fetchFXRates(){
-  const r=await fetch("https://open.er-api.com/v6/latest/EUR",{cache:"no-store"});
-  if(!r.ok) throw new Error("FX "+r.status);
-  const j=await r.json();
-  if(!j.rates?.USD || !j.rates?.JPY || !j.rates?.IDR) throw new Error("FX rates unavailable");
-  return {USD:+j.rates.USD,JPY:+j.rates.JPY,IDR:+j.rates.IDR};
-}
-async function refreshFX(){
-  try{
-    fxRates=await fetchFXRates();
-    fxUpdated=new Date();
-    calc();
-  }catch(e){
-    console.warn("FX refresh failed",e);
-  }
-}
-
-function saveState(){readInputs();if(!state.snapshotAsOf)state.snapshotAsOf=isoDateLocal();snapshotAsOfInput.value=state.snapshotAsOf;state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));lastSaved.textContent="Saved locally: "+new Date().toLocaleString();calc()}
-async function fetchCoinGecko(){const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=eur",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.bitcoin.eur}
-async function fetchCoinbase(){const r=await fetch("https://api.coinbase.com/v2/prices/BTC-EUR/spot",{cache:"no-store"});if(!r.ok)throw new Error();const j=await r.json();return +j.data.amount}
-async function refreshPrice(){priceSource.textContent="Refreshing…";try{btcPrice=await fetchCoinGecko();priceSource.textContent="CoinGecko • "+new Date().toLocaleTimeString()}catch(e1){try{btcPrice=await fetchCoinbase();priceSource.textContent="Coinbase fallback • "+new Date().toLocaleTimeString()}catch(e2){priceSource.textContent="Live fetch failed • using last saved price"}}state.fallbackPrice=btcPrice;localStorage.setItem("portfolioState_v2",JSON.stringify(state));calc()}
-function addSalary(){const x=+salaryAdd.value||0;if(!x)return;state.revolut+=x;revolut.value=state.revolut.toFixed(2);salaryAdd.value="";saveState()}
-function saveSnapshot(){readInputs();if(!state.snapshotAsOf)state.snapshotAsOf=isoDateLocal();snapshotAsOfInput.value=state.snapshotAsOf;const buffer=state.revolut+state.ingCurrent+state.ingSavings+state.usdc+(state.bybitEur||0);const asset=state.btcHoldings*btcPrice;const total=asset+buffer;const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");snaps.push({timestamp:new Date().toISOString(),asOf:state.snapshotAsOf,btcPrice,btcHoldings:state.btcHoldings,btcBybit:state.btcBybit,btcTrezor:state.btcTrezor,revolut:state.revolut,ingCurrent:state.ingCurrent,ingSavings:state.ingSavings,bybitEur:state.bybitEur,usdcEurValue:state.usdc,usdcAmount:state.usdcAmount,asset,buffer,total,assetPct:total?asset/total*100:0,bufferPct:total?buffer/total*100:0});localStorage.setItem("portfolioSnapshots",JSON.stringify(snaps));localStorage.setItem("portfolioState_v2",JSON.stringify(state));lastSaved.textContent="Snapshot saved: "+new Date().toLocaleString();calc()}
-function exportSnapshots(){const snaps=JSON.parse(localStorage.getItem("portfolioSnapshots")||"[]");if(!snaps.length){alert("No snapshots saved yet.");return}const header=["timestamp","asOf","btcPrice","btcHoldings","btcBybit","btcTrezor","revolut","ingCurrent","ingSavings","bybitEur","usdcEurValue","usdcAmount","asset","buffer","total","assetPct","bufferPct"];const rows=[header.join(",")].concat(snaps.map(s=>header.map(k=>s[k]??"").join(",")));const blob=new Blob([rows.join("\n")],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="portfolio_snapshots_v2.csv";a.click();URL.revokeObjectURL(a.href)}
-function resetDefaults(){if(!confirm("Reset saved dashboard values to defaults?"))return;state={...defaults};localStorage.setItem("portfolioState_v2",JSON.stringify(state));populateInputs();calc();refreshPrice()}
-
-
-async function loadBalanceUpdateFile(file){
-  const status=document.getElementById("balanceUpdateStatus");
-  status.textContent="Reading update…";
-  try{
-    const data=JSON.parse(await file.text());
-    const b=data.balances || data;
-
-    // Legacy V1/V1.x keys remain supported.
-    const pick=(...keys)=>{for(const k of keys){if(typeof b[k]==="number"&&Number.isFinite(b[k]))return b[k]}return null};
-    const rev=pick("revolut","revolutEur");
-    const cur=pick("ingCurrent","ingCurrentEur");
-    const sav=pick("ingSavings","ingSavingsEur");
-    const usdcEur=pick("usdc","usdcEurValue");
-    const byeur=pick("bybitEur","bybitEurBalance");
-    if([rev,cur,sav,usdcEur,byeur].some(v=>v===null)) throw new Error("Missing one or more EUR balance buckets");
-
-    const btcLegacy=pick("btcHoldings","btcTotal");
-    const btcBybit=pick("btcBybit","bybitBtc");
-    const btcTrezor=pick("btcTrezor","trezorBtc");
-    let btcTotal=btcLegacy;
-    if(btcBybit!==null && btcTrezor!==null) btcTotal=btcBybit+btcTrezor;
-    if(btcTotal===null) throw new Error("Missing BTC total or custody split");
-
-    state.revolut=rev;state.ingCurrent=cur;state.ingSavings=sav;state.usdc=usdcEur;state.bybitEur=byeur;
-    state.btcHoldings=btcTotal;
-    state.btcBybit=(btcBybit!==null&&btcTrezor!==null)?btcBybit:null;
-    state.btcTrezor=(btcBybit!==null&&btcTrezor!==null)?btcTrezor:null;
-    state.usdcAmount=pick("usdcAmount","usdcNative");
-    state.snapshotAsOf=(data.asOf||data.snapshotDate||b.asOf||state.snapshotAsOf||"").slice(0,10);
-    localStorage.setItem("portfolioState_v2",JSON.stringify(state));
-    populateInputs();calc();
-    const label=state.snapshotAsOf ? (" • "+state.snapshotAsOf) : "";
-    status.textContent="Portfolio snapshot loaded"+label;
-    lastSaved.textContent="Balance update synced: "+new Date().toLocaleString();
-  }catch(err){
-    console.error(err);
-    status.textContent="Balance update failed: "+err.message;
-  }
-}
-
-function extractAuditBridge(data){
-  if(!data||typeof data!=="object") return null;
-  const raw=data.auditBridge||data.auditCheckpoint||data.reconciliationCheckpoint||null;
-  if(!raw) return null;
-  const balances=raw.closingBalances||raw.balances||{};
-  const checkpointDate=(raw.checkpointDate||raw.asOf||raw.date||"").slice(0,10);
-  if(!checkpointDate) return null;
-  const get=(...keys)=>{for(const k of keys){const v=balances[k];if(typeof v==="number"&&Number.isFinite(v))return v}return null};
-  return {
-    checkpointDate,
+function normalizeWeekly(d){
+  if(!d||typeof d!=="object")throw new Error("Weekly JSON is not an object");
+  const b=d.balances||{};
+  const num=(...keys)=>{for(const k of keys){if(isNum(b[k]))return b[k];}return null};
+  const out={
+    schema:d.schema||"unknown",asOf:String(d.asOf||d.snapshotDate||"").slice(0,10),observedBtcPriceEur:isNum(d.observedBtcPriceEur)?d.observedBtcPriceEur:null,
     balances:{
-      revolutEur:get("revolutEur","revolut"),
-      ingCurrentEur:get("ingCurrentEur","ingCurrent"),
-      ingSavingsEur:get("ingSavingsEur","ingSavings"),
-      bybitEur:get("bybitEur"),
-      usdcAmount:get("usdcAmount","usdc"),
-      btcBybit:get("btcBybit","bybitBtc"),
-      btcTrezor:get("btcTrezor","trezorBtc"),
-      btcTotal:get("btcTotal","btcHoldings")
-    },
-    bridgeFlows: raw.bridgeFlows||raw.flowsToPortfolioSnapshot||null
+      revolutEur:num("revolutEur","revolut"),ingCurrentEur:num("ingCurrentEur","ingCurrent"),ingSavingsEur:num("ingSavingsEur","ingSavings"),
+      bybitEur:num("bybitEur","bybitEurBalance"),usdcEurValue:num("usdcEurValue","usdc"),usdcAmount:num("usdcAmount","usdcNative"),
+      btcBybit:num("btcBybit","bybitBtc"),btcTrezor:num("btcTrezor","trezorBtc"),btcTotal:num("btcTotal","btcHoldings")
+    }
   };
+  if(!out.asOf)throw new Error("Missing asOf date");
+  const req=[out.balances.revolutEur,out.balances.ingCurrentEur,out.balances.ingSavingsEur,out.balances.usdcEurValue];
+  if(req.some(v=>v===null))throw new Error("Missing required EUR balance bucket");
+  if(out.balances.bybitEur===null)out.balances.bybitEur=0;
+  if(out.balances.btcTotal===null && out.balances.btcBybit!==null && out.balances.btcTrezor!==null)out.balances.btcTotal=out.balances.btcBybit+out.balances.btcTrezor;
+  if(out.balances.btcTotal===null)throw new Error("Missing BTC total or custody split");
+  return out;
 }
-
-function lastFullOperationsMonth(data){
-  const full=(data?.monthly||[]).filter(x=>x&&x.status==="full"&&/^\d{4}-\d{2}$/.test(x.month||""));
-  if(!full.length)return null;
-  full.sort((a,b)=>a.month.localeCompare(b.month));
-  return full[full.length-1].month;
+function normalizeAudit(d){
+  if(!d||d.schema!=="operations-portfolio-audit-v1")throw new Error("Only operations-portfolio-audit-v1 is accepted");
+  return d;
 }
+function totalBuffer(){if(!weekly)return null;const b=weekly.balances;return b.revolutEur+b.ingCurrentEur+b.ingSavingsEur+b.bybitEur+b.usdcEurValue}
+function totalBtc(){return weekly?.balances?.btcTotal??null}
+function currentPrice(){return isNum(btcPrice)?btcPrice:(weekly?.observedBtcPriceEur??null)}
+function snapshotTotal(){const p=currentPrice(),t=totalBtc(),buf=totalBuffer();return isNum(p)&&isNum(t)&&isNum(buf)?t*p+buf:null}
 
-function renderReconciliation(){
-  auditPortfolioDate.textContent=state.snapshotAsOf||"Not set";
-  if(!operationsData){
-    reconHeadline.textContent="Portfolio standalone";
-    setBadge(reconBadge,"OPERATIONS NOT LOADED","muted");
-    opsCoverage.textContent="—";opsLastFullMonth.textContent="—";
-    auditBtc.textContent="—";auditCash.textContent="—";auditUsdc.textContent="—";auditCustody.textContent="—";auditGap.textContent="—";
-    auditNote.innerHTML="Load an Operations JSON to enable temporal alignment and, when a month-end native-unit checkpoint is available, cross-audit. <strong>The Portfolio cockpit remains fully functional without it.</strong>";
-    renderFlowVsMarket(null);return;
+function setChip(el,text,cls){el.textContent=text;el.className="chip "+cls}
+function setBadge(el,text,cls){el.textContent=text;el.className="badge "+cls}
+function render(){
+  if(!weekly){
+    setChip($("weeklyChip"),"WEEKLY JSON NOT LOADED","muted");
+    $("statusLine").textContent="No weekly state loaded. Start with START_LOCAL.bat for automatic package loading, or choose Load Weekly JSON.";
+    return;
   }
-
-  const coverage=operationsData?.sourcePeriod?.to||operationsData?.period?.end||"Unknown";
-  const fullMonth=lastFullOperationsMonth(operationsData);
-  opsCoverage.textContent=coverage;
-  opsLastFullMonth.textContent=fullMonth?(fullMonth+" • close "+monthEndIso(fullMonth)):"Unknown";
-  const audit=extractAuditBridge(operationsData);
-
-  if(!audit){
-    reconHeadline.textContent="Operations loaded • checkpoint pending";
-    setBadge(reconBadge,"PARTIAL AUDIT","warn");
-    auditBtc.textContent="Pending";auditCash.textContent="Pending";auditUsdc.textContent="Pending";auditCustody.textContent="Pending";auditGap.textContent="—";
-    auditNote.innerHTML="Temporal alignment is active, but this Operations summary does not contain a native-unit month-end balance checkpoint yet. <strong>No mismatch is inferred.</strong> Current weekly state and monthly flow remain independent.";
-    renderFlowVsMarket(null);return;
+  setChip($("weeklyChip"),"WEEKLY "+weekly.asOf+" LOADED","good");
+  $("snapshotMeta").textContent="Snapshot: "+weekly.asOf;
+  $("auditSnapshot").textContent=weekly.asOf;$("flowCurrent").textContent=weekly.asOf;
+  const b=weekly.balances,tbtc=totalBtc(),p=currentPrice(),buffer=totalBuffer(),asset=isNum(p)?tbtc*p:null,total=isNum(asset)?asset+buffer:null;
+  $("btcHoldings").textContent=tbtc.toFixed(8);$("satsMeta").textContent=Math.round(tbtc*1e8).toLocaleString("en-US")+" sats";
+  $("btcPrice").textContent=eur(p);$("priceMeta").textContent=isNum(btcPrice)?"Live price source active.":"Fallback: weekly observed BTC price.";
+  $("assetValue").textContent=eur(asset);$("portfolioEur").textContent=eur(total);
+  $("trezorBtc").textContent=btc(b.btcTrezor);$("bybitBtc").textContent=btc(b.btcBybit);$("totalBtcRow").textContent=btc(tbtc);
+  $("custodyNote").textContent=(isNum(b.btcTrezor)&&isNum(b.btcBybit)&&Math.abs((b.btcTrezor+b.btcBybit)-tbtc)<=1e-8)?"✓ Custody split reconciles to total BTC.":"Custody split incomplete; total BTC remains authoritative for valuation.";
+  $("revolut").textContent=eur(b.revolutEur);$("ingCurrent").textContent=eur(b.ingCurrentEur);$("ingSavings").textContent=eur(b.ingSavingsEur);$("bybitEur").textContent=eur(b.bybitEur);$("usdcEur").textContent=eur(b.usdcEurValue);
+  if(isNum(total)&&total>0){
+    const ap=asset/total*100,bp=100-ap;$("ratioText").textContent=pct(ap)+" / "+pct(bp);$("ratioFill").style.width=Math.max(0,Math.min(100,ap))+"%";
+    const card=$("actionCard"),av=$("actionValue");card.className="card actionCard";av.className="actionValue";
+    if(ap>65){const gap=Math.max(0,asset/0.65-asset-buffer);card.classList.add("warn");av.classList.add("warn");$("actionLabel").textContent="BUFFER MODE";av.textContent="+"+eur(gap);$("actionText").textContent="Additional buffer to return to the 65/35 working equilibrium. Existing BTC does not need to be sold.";$("ratioNote").textContent="Above 65% asset. New cashflow preferentially rebuilds reserve.";$("exposureText").textContent="Paused by buffer mode";
+    }else if(ap>=60){card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="NORMAL OPERATING ZONE";av.textContent="60–65%";$("actionText").textContent="No forced allocation action. Portfolio is inside the working band.";$("ratioNote").textContent="Inside the operating band. Allocation can remain unchanged.";$("exposureText").textContent="No forced action";
+    }else{const cap=Math.max(0,(0.60*total-asset)/0.40);card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="EXPOSURE CAP AVAILABLE";av.textContent=eur(cap);$("actionText").textContent="Capacity before reaching the 60/40 deployment gate. Cap is not a quota.";$("ratioNote").textContent="Below 60% asset. Deployment capacity exists subject to market structure and reserve discipline.";$("exposureText").textContent=eur(cap)}
   }
-
-  const snapDate=state.snapshotAsOf||"";
-  if(!sameDate(snapDate,audit.checkpointDate)){
-    reconHeadline.textContent="Checkpoint available • cadence not aligned";
-    setBadge(reconBadge,"PENDING BRIDGE","warn");
-    auditBtc.textContent="Date mismatch";auditCash.textContent="Date mismatch";auditUsdc.textContent="Date mismatch";auditCustody.textContent="Date mismatch";auditGap.textContent="—";
-    auditNote.innerHTML=`Operations checkpoint is <strong>${audit.checkpointDate}</strong>, while Portfolio state is <strong>${snapDate||"undated"}</strong>. V2.0 will not compare balances across different dates without an explicit flow bridge.`;
-    renderFlowVsMarket(null);return;
-  }
-
-  const tolEur=.02,tolBtc=1e-8,tolUsdc=.0001;
-  let known=0,passed=0,gaps=[];
-  const b=audit.balances;
-  const expectedBtc=(b.btcTotal!==null)?b.btcTotal:((b.btcBybit!==null&&b.btcTrezor!==null)?b.btcBybit+b.btcTrezor:null);
-  if(expectedBtc!==null){known++;const gap=(Number(state.btcHoldings)||0)-expectedBtc;gaps.push({kind:"btc",gap});if(Math.abs(gap)<=tolBtc)passed++;auditBtc.textContent=Math.abs(gap)<=tolBtc?"✓ MATCH":"GAP "+gap.toFixed(8)+" BTC"}else auditBtc.textContent="No checkpoint";
-
-  const cashParts=[b.revolutEur,b.ingCurrentEur,b.ingSavingsEur,b.bybitEur];
-  if(cashParts.every(v=>v!==null)){known++;const expected=cashParts.reduce((a,v)=>a+v,0),gap=currentEurCash()-expected;gaps.push({kind:"eur",gap});if(Math.abs(gap)<=tolEur)passed++;auditCash.textContent=Math.abs(gap)<=tolEur?"✓ MATCH":"GAP "+moneyEUR(gap)}else auditCash.textContent="No checkpoint";
-
-  if(b.usdcAmount!==null && Number.isFinite(Number(state.usdcAmount))){known++;const gap=Number(state.usdcAmount)-b.usdcAmount;gaps.push({kind:"usdc",gap});if(Math.abs(gap)<=tolUsdc)passed++;auditUsdc.textContent=Math.abs(gap)<=tolUsdc?"✓ MATCH":"GAP "+fmt(gap,4)+" USDC"}else auditUsdc.textContent="Native unit unavailable";
-
-  if(b.btcBybit!==null&&b.btcTrezor!==null&&Number.isFinite(Number(state.btcBybit))&&Number.isFinite(Number(state.btcTrezor))){known++;const g1=Number(state.btcBybit)-b.btcBybit,g2=Number(state.btcTrezor)-b.btcTrezor;const ok=Math.abs(g1)<=tolBtc&&Math.abs(g2)<=tolBtc;if(ok)passed++;auditCustody.textContent=ok?"✓ CONSISTENT":"Custody gap"}else auditCustody.textContent="Split unavailable";
-
-  if(known&&passed===known){reconHeadline.textContent="Native-unit checkpoint reconciled";setBadge(reconBadge,"RECONCILED","good");auditGap.textContent="No unexplained native-unit gap";auditNote.innerHTML="Portfolio and Operations agree on every comparable native-unit checkpoint field for the same date."}
-  else if(known){reconHeadline.textContent="Reconciliation gap detected";setBadge(reconBadge,"CHECK GAP","bad");auditGap.textContent=(known-passed)+" field(s) require review";auditNote.innerHTML="At least one same-date native-unit checkpoint differs. Review source cutoff, internal transfers, custody moves, and classification before treating it as an economic loss."}
-  else{reconHeadline.textContent="Checkpoint loaded • insufficient comparable fields";setBadge(reconBadge,"INSUFFICIENT DATA","muted");auditGap.textContent="—";auditNote.innerHTML="The checkpoint date aligns, but comparable native-unit fields are not available in both datasets."}
-  renderFlowVsMarket(audit);
+  if(fx&&isNum(total)){
+    $("portfolioUsd").textContent=usd(total*fx.USD);$("portfolioJpy").textContent=jpy(total*fx.JPY);$("portfolioIdr").textContent=idr(total*fx.IDR);
+    $("usdMeta").textContent="1 EUR = "+fx.USD.toFixed(4)+" USD";$("jpyMeta").textContent="1 EUR = "+fx.JPY.toFixed(2)+" JPY";$("idrMeta").textContent="1 EUR = "+Math.round(fx.IDR).toLocaleString("id-ID")+" IDR";
+  }else{$("portfolioUsd").textContent=$("portfolioJpy").textContent=$("portfolioIdr").textContent="—"}
+  renderAudit();
+  $("statusLine").textContent="Weekly state: "+weekly.asOf+" • source: "+weeklySource+" • BTC valuation: "+(isNum(btcPrice)?"live":"weekly fallback")+" • Operations audit: "+(audit?audit.status:"not loaded")+". No state is persisted in the browser.";
 }
-
-function renderFlowVsMarket(audit){
-  [flowTotalChange,flowCash,flowMarket,flowFees,flowGap].forEach(x=>x.textContent="—");
-  flowPlaceholder.innerHTML="Waiting for a matched reconciled checkpoint.<br>V2.0 will not invent a decomposition when the two cadences do not overlap cleanly.";
-  if(!audit||!sameDate(state.snapshotAsOf,audit.checkpointDate))return;
-  // Flow-vs-market requires a prior Portfolio checkpoint plus explicit native flow bridge.
-  // Current Operations V2.2 intentionally does not provide this yet.
-  flowPlaceholder.innerHTML="Native checkpoint aligned. Flow-vs-Market will unlock when a prior Portfolio checkpoint and explicit post-checkpoint flow bridge are available. No derived market P&L is guessed from incomplete data.";
+function renderAudit(){
+  if(!audit){setChip($("auditChip"),"OPERATIONS AUDIT NOT LOADED","muted");$("auditHeadline").textContent="Portfolio standalone";setBadge($("auditBadge"),"OPERATIONS NOT LOADED","muted");$("auditCoverage").textContent=$("auditFullMonth").textContent=$("auditRevision").textContent="—";$("auditCheckpoint").textContent="—";$("auditFlowBridge").textContent="—";$("auditGap").textContent="Not computed";$("auditNote").textContent="No Operations audit loaded. This does not block Portfolio valuation or allocation.";return}
+  const c=audit.coverage||{},cap=audit.capabilities||{},src=audit.source||{};
+  setChip($("auditChip"),"OPS VERIFIED THROUGH "+(c.periodTo||"—"),audit.status==="partial_audit"?"warn":"good");
+  $("auditCoverage").textContent=c.periodTo||"—";$("auditFullMonth").textContent=c.lastFullMonth||"—";$("auditRevision").textContent=src.masterRevision||"—";
+  $("auditCheckpoint").textContent=cap.nativeBalanceCheckpoint?"Available":"Not emitted";$("auditFlowBridge").textContent=cap.postCheckpointFlowBridge?"Available":"Not emitted";$("auditGap").textContent="Not computed";
+  if(audit.status==="partial_audit"){$("auditHeadline").textContent="Operations source verified • checkpoint pending";setBadge($("auditBadge"),"PARTIAL AUDIT","warn");$("auditNote").textContent="Temporal/source coverage is verified, but no native-unit closing checkpoint exists yet. No mismatch is inferred and no Operations ledger data is copied into Portfolio."}
+  else{$("auditHeadline").textContent="Operations audit loaded";setBadge($("auditBadge"),String(audit.status||"LOADED").toUpperCase(),"good");$("auditNote").textContent=audit.note||"Read-only Operations audit sidecar loaded."}
 }
-
-async function loadOperationsAuditFile(file){
-  const status=document.getElementById("operationsAuditStatus");status.textContent="Reading Operations…";
-  try{
-    const data=JSON.parse(await file.text());
-    if(!data||typeof data!=="object"||(!data.monthly&&!data.sourcePeriod&&!data.auditBridge)) throw new Error("Unrecognized Operations summary");
-    operationsData=data;
-    const label=data?.sourcePeriod?.to?(" • through "+data.sourcePeriod.to):"";
-    status.textContent="Operations loaded"+label;
-    renderReconciliation();
-  }catch(err){operationsData=null;console.error(err);status.textContent="Operations load failed: "+err.message;renderReconciliation()}
+async function fetchJson(path){const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error(path+" HTTP "+r.status);return r.json()}
+function loadEmbeddedData(){
+  const w=document.getElementById("embeddedWeekly"),a=document.getElementById("embeddedAudit");
+  let loaded=false;
+  if(w?.textContent?.trim()){weekly=normalizeWeekly(JSON.parse(w.textContent));weeklySource="embedded local preview";loaded=true}
+  if(a?.textContent?.trim()){audit=normalizeAudit(JSON.parse(a.textContent));auditSource="embedded local preview";loaded=true}
+  return loaded;
 }
-function clearOperationsAudit(){operationsData=null;operationsAuditStatus.textContent="Not loaded.";const f=document.getElementById("operationsAuditFile");if(f)f.value="";renderReconciliation()}
-
-
-function numFromText(text, key){
-  if(!text) return null;
-  const esc = key.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-  const re = new RegExp(esc+"\\s*([0-9.,]+)","i");
-  const m = String(text).match(re);
-  if(!m) return null;
-  let s=m[1];
-  // Notes use commas as thousands separators in the current sheet.
-  if(s.includes(",") && s.includes(".")) s=s.replace(/,/g,"");
-  else if(s.includes(",") && !s.includes(".")) s=s.replace(",",".");
-  return Number(s);
+async function loadPackageData(){
+  let wErr=null,aErr=null;
+  try{weekly=normalizeWeekly(await fetchJson("./private/portfolio_weekly_latest.json"));weeklySource="package private/portfolio_weekly_latest.json"}catch(e){wErr=e}
+  try{audit=normalizeAudit(await fetchJson("./private/operations_audit_latest.json"));auditSource="package private/operations_audit_latest.json"}catch(e){aErr=e}
+  render();
+  if(wErr){$("statusLine").textContent="Automatic local JSON loading is unavailable (common when index.html is opened directly as file://). Use START_LOCAL.bat, or Load Weekly JSON manually. Detail: "+wErr.message}
+  if(!wErr&&aErr)$("statusLine").textContent+=" Operations audit sidecar did not auto-load: "+aErr.message;
 }
-
-function findLatestRow(rows){
-  let best=null;
-  for(const row of rows){
-    const rawDate = row["Date"];
-    if(rawDate===undefined || rawDate===null || rawDate==="") continue;
-    let d;
-    if(rawDate instanceof Date) d=rawDate;
-    else if(typeof rawDate==="number"){
-      const parsed=XLSX.SSF.parse_date_code(rawDate);
-      if(parsed) d=new Date(parsed.y,parsed.m-1,parsed.d);
-    } else {
-      const s=String(rawDate).trim();
-      d=new Date(s);
-      if(isNaN(d)){
-        const parts=s.split(/[-/]/).map(Number);
-        if(parts.length===3){
-          if(parts[0]>1900) d=new Date(parts[0],parts[1]-1,parts[2]);
-          else d=new Date(parts[2],parts[1]-1,parts[0]);
-        }
-      }
-    }
-    if(d && !isNaN(d) && (!best || d>best.date)) best={row,date:d};
-  }
-  return best;
+async function readChosen(file,kind){
+  try{const d=JSON.parse(await file.text());if(kind==="weekly"){weekly=normalizeWeekly(d);weeklySource="manual file: "+file.name}else{audit=normalizeAudit(d);auditSource="manual file: "+file.name}render()}catch(e){$("statusLine").textContent=(kind==="weekly"?"Weekly":"Audit")+" JSON load failed: "+e.message}
 }
-
-async function loadExcelFile(file){
-  const status=document.getElementById("excelStatus");
-  status.textContent="Reading Excel…";
-  try{
-    const data=await file.arrayBuffer();
-    const book=XLSX.read(data,{type:"array",cellDates:true});
-    const sheetName=book.SheetNames.includes("Portfolio Snapshot") ? "Portfolio Snapshot" : book.SheetNames[0];
-    const sheet=book.Sheets[sheetName];
-    const rows=XLSX.utils.sheet_to_json(sheet,{defval:null});
-    const latest=findLatestRow(rows);
-    if(!latest) throw new Error("No dated rows found.");
-
-    const row=latest.row;
-    const notes=row["Notes"] || "";
-
-    const totalBtc = numFromText(notes,"BTC");
-    const rev = numFromText(notes,"Revolut");
-    const ingCur = numFromText(notes,"ING current");
-    const ingSav = numFromText(notes,"ING savings");
-    const usdcVal = numFromText(notes,"USDC");
-    const bybitEurVal = numFromText(notes,"Bybit EUR");
-
-    if(totalBtc!==null){state.btcHoldings=totalBtc;state.btcBybit=null;state.btcTrezor=null;}
-    if(rev!==null) state.revolut=rev;
-    if(ingCur!==null) state.ingCurrent=ingCur;
-    if(ingSav!==null) state.ingSavings=ingSav;
-    if(usdcVal!==null) state.usdc=usdcVal;
-    if(bybitEurVal!==null) state.bybitEur=bybitEurVal;
-
-    // Fallback if Notes does not include bucket details: preserve total Cash
-    // by putting the difference into Revolut.
-    const cashCell = Number(row["Cash (EUR)"] ?? row["Cash"] ?? NaN);
-    const parsedBuffer=[state.revolut,state.ingCurrent,state.ingSavings,state.usdc,state.bybitEur].reduce((a,b)=>a+(+b||0),0);
-    if(Number.isFinite(cashCell) && Math.abs(parsedBuffer-cashCell)>0.02){
-      state.revolut += cashCell-parsedBuffer;
-    }
-
-    state.snapshotAsOf=latest.date.toISOString().slice(0,10);
-    localStorage.setItem("portfolioState_v2",JSON.stringify(state));
-    populateInputs();
-    calc();
-    status.textContent="Loaded "+latest.date.toLocaleDateString()+" from "+sheetName;
-    lastSaved.textContent="Excel synced: "+new Date().toLocaleString();
-  }catch(err){
-    console.error(err);
-    status.textContent="Excel import failed: "+err.message;
-  }
+async function fetchWithTimeout(url,ms=3500){
+  const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),ms);
+  try{return await fetch(url,{cache:"no-store",signal:ctrl.signal})}finally{clearTimeout(timer)}
 }
-
-document.getElementById("excelFile").addEventListener("change", e=>{
-  const f=e.target.files && e.target.files[0];
-  if(f) loadExcelFile(f);
-  e.target.value="";
-});
-
-document.getElementById("balanceUpdateFile").addEventListener("change", e=>{
-  const f=e.target.files && e.target.files[0];
-  if(f) loadBalanceUpdateFile(f);
-  e.target.value="";
-});
-
-document.getElementById("operationsAuditFile").addEventListener("change", e=>{
-  const f=e.target.files && e.target.files[0];
-  if(f) loadOperationsAuditFile(f);
-  e.target.value="";
-});
-
-document.getElementById("snapshotAsOfInput").addEventListener("change",()=>{state.snapshotAsOf=snapshotAsOfInput.value||"";localStorage.setItem("portfolioState_v2",JSON.stringify(state));calc();});
-
-["revolut","ingCurrent","ingSavings","usdc","bybitEur","btcHoldings"].forEach(id=>document.getElementById(id).addEventListener("input",()=>{if(id==="btcHoldings"){state.btcBybit=null;state.btcTrezor=null}calc()}));
-populateInputs();calc();renderReconciliation();refreshPrice();refreshFX();setInterval(refreshPrice,60000);setInterval(refreshFX,300000);
+async function refreshMarket(){
+  try{const r=await fetchWithTimeout("https://api.coinbase.com/v2/prices/BTC-EUR/spot");if(!r.ok)throw new Error("Coinbase HTTP "+r.status);const j=await r.json();const p=Number(j?.data?.amount);if(!Number.isFinite(p))throw new Error("bad Coinbase price");btcPrice=p}catch(e){btcPrice=null}
+  try{const r=await fetchWithTimeout("https://open.er-api.com/v6/latest/EUR");if(!r.ok)throw new Error("FX HTTP "+r.status);const j=await r.json();if(!j.rates?.USD||!j.rates?.JPY||!j.rates?.IDR)throw new Error("FX rates missing");fx={USD:Number(j.rates.USD),JPY:Number(j.rates.JPY),IDR:Number(j.rates.IDR)}}catch(e){fx=null;$("usdMeta").textContent=$("jpyMeta").textContent=$("idrMeta").textContent="FX offline"}
+  render();
+}
+$("reloadBtn").addEventListener("click",async()=>{await loadPackageData();await refreshMarket()});
+$("weeklyFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"weekly");e.target.value=""});
+$("auditFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"audit");e.target.value=""});
+(async()=>{
+  let embedded=false;try{embedded=loadEmbeddedData()}catch(e){$("statusLine").textContent="Embedded local preview failed: "+e.message}
+  if(embedded){setChip($("modeChip"),"LOCAL EMBEDDED PREVIEW","good");render()}
+  else{setChip($("modeChip"),location.protocol==="file:"?"FILE MODE":"LOCAL HTTP MODE",location.protocol==="file:"?"warn":"good");await loadPackageData()}
+  await refreshMarket();setInterval(refreshMarket,60000)
+})();
 </script>
 </body>
 </html>
