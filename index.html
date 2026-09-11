@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio Cockpit V2.2 RC1</title>
+<title>Portfolio Cockpit V2.2</title>
 <style>
 :root{
   --bg:#0d1014;--panel:#15191f;--panel2:#1b2028;--line:#2a313b;--text:#f4f6f8;--muted:#91a0b2;
@@ -33,8 +33,8 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
 <div class="wrap">
   <div class="top">
     <div>
-      <h1>Portfolio Cockpit V2.2 RC1</h1>
-      <div class="sub">Weekly state cockpit • Wednesday cadence • Portfolio owns state • Operations audit is read-only.</div>
+      <h1>Portfolio Cockpit V2.2</h1>
+      <div class="sub">PRODUCTION • Weekly state cockpit • Wednesday cadence • Portfolio owns state • Operations audit is read-only.</div>
       <div class="chipRow">
         <span class="chip muted" id="weeklyChip">WEEKLY JSON NOT LOADED</span>
         <span class="chip muted" id="auditChip">OPERATIONS AUDIT NOT LOADED</span>
@@ -43,8 +43,8 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
     </div>
     <div class="controls">
       <button class="btn" id="reloadBtn">Reload package data</button>
-      <label class="fileBtn">Load Weekly JSON<input id="weeklyFile" type="file" accept=".json,application/json"></label>
-      <label class="fileBtn">Load Audit JSON<input id="auditFile" type="file" accept=".json,application/json"></label>
+      <label class="fileBtn">Load Weekly Portfolio<input id="weeklyFile" type="file" accept=".json,application/json"></label>
+      <label class="fileBtn">Load Operations Audit<input id="auditFile" type="file" accept=".json,application/json"></label>
     </div>
   </div>
 
@@ -123,7 +123,7 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
   </div>
 
   <div class="footer">
-    <span class="privacy">Public-safe shell:</span> this HTML contains no embedded personal balance telemetry and stores nothing in localStorage. The packaged <code>private/</code> JSON files are for local testing only and are excluded by <code>.gitignore</code>. Operations Dashboard remains a separate accounting cockpit; Portfolio only accepts the small read-only audit sidecar.
+    <span class="privacy">Public-safe shell:</span> this HTML contains no embedded personal balance telemetry and stores nothing in localStorage. The packaged <code>private/</code> JSON files are private local inputs and are excluded by <code>.gitignore</code>. Operations Dashboard remains a separate accounting cockpit; Portfolio only accepts the small read-only audit sidecar.
   </div>
 </div>
 <script>
@@ -174,7 +174,7 @@ function setBadge(el,text,cls){el.textContent=text;el.className="badge "+cls}
 function render(){
   if(!weekly){
     setChip($("weeklyChip"),"WEEKLY JSON NOT LOADED","muted");
-    $("statusLine").textContent="No weekly state loaded. Start with START_LOCAL.bat for automatic package loading, or choose Load Weekly JSON.";
+    $("statusLine").textContent="No weekly state loaded. Start with START_LOCAL.bat for automatic package loading, or choose Load Weekly Portfolio.";
     return;
   }
   setChip($("weeklyChip"),"WEEKLY "+weekly.asOf+" LOADED","good");
@@ -220,10 +220,10 @@ function loadEmbeddedData(){
 }
 async function loadPackageData(){
   let wErr=null,aErr=null;
-  try{weekly=normalizeWeekly(await fetchJson("./private/portfolio_weekly_latest.json"));weeklySource="package private/portfolio_weekly_latest.json"}catch(e){wErr=e}
-  try{audit=normalizeAudit(await fetchJson("./private/operations_audit_latest.json"));auditSource="package private/operations_audit_latest.json"}catch(e){aErr=e}
+  try{weekly=normalizeWeekly(await fetchJson("./private/LOAD_ME__portfolio_weekly_latest.json"));weeklySource="package private/LOAD_ME__portfolio_weekly_latest.json"}catch(e){wErr=e}
+  try{audit=normalizeAudit(await fetchJson("./private/LOAD_ME__operations_audit_latest.json"));auditSource="package private/LOAD_ME__operations_audit_latest.json"}catch(e){aErr=e}
   render();
-  if(wErr){$("statusLine").textContent="Automatic local JSON loading is unavailable (common when index.html is opened directly as file://). Use START_LOCAL.bat, or Load Weekly JSON manually. Detail: "+wErr.message}
+  if(wErr){$("statusLine").textContent="Automatic local JSON loading is unavailable (common when index.html is opened directly as file://). Use START_LOCAL.bat, or Load Weekly Portfolio manually. Detail: "+wErr.message}
   if(!wErr&&aErr)$("statusLine").textContent+=" Operations audit sidecar did not auto-load: "+aErr.message;
 }
 async function readChosen(file,kind){
