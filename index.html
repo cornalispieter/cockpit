@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portfolio Cockpit V2.2</title>
+<title>Portfolio Cockpit V2.2 · P9.1 Production</title>
 <style>
 :root{
   --bg:#0d1014;--panel:#15191f;--panel2:#1b2028;--line:#2a313b;--text:#f4f6f8;--muted:#91a0b2;
@@ -29,7 +29,7 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
 @media(max-width:900px){.grid4{grid-template-columns:repeat(2,1fr)}.two,.twoEq{grid-template-columns:1fr}.auditGrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.wrap{padding:14px}.grid4,.fxGrid{grid-template-columns:1fr}.value{font-size:24px}.auditGrid{grid-template-columns:1fr}.controls{width:100%}.btn,.fileBtn{flex:1;text-align:center}}
 
-.sourceGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.sourceGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
 .sourceCard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px;min-width:0}
 .sourceCard.good{border-color:rgba(71,209,140,.45)}.sourceCard.warn{border-color:rgba(244,201,93,.45)}
 .sourceTitle{font-size:10px;font-weight:850;letter-spacing:.05em;color:#c8d3df}
@@ -75,22 +75,43 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
 @media(max-width:980px){.execGrid{grid-template-columns:repeat(2,1fr)}.execRow{grid-template-columns:1fr}}
 @media(max-width:580px){.execGrid{grid-template-columns:1fr}.execForm{grid-template-columns:1fr}}
 
+
+/* P9.1 Step 6 UX hierarchy cleanup */
+.grossRef{display:grid;grid-template-columns:1.25fr .75fr;gap:10px;margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.008);border-radius:13px;padding:10px}
+.grossRefCard{min-width:0;padding:2px 3px}.grossRefTop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.grossRefTitle{font-size:10px;font-weight:900;letter-spacing:.055em;color:#b8c4d2}.grossRefAuthority{font-size:9px;font-weight:900;letter-spacing:.045em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 7px;white-space:nowrap}.grossRef .ratio{font-size:19px;margin-top:3px}.grossRef .bar{height:8px;margin-top:8px}.grossRef .band{height:14px}.grossRef .band:after{font-size:8px;top:2px}.grossRef .small{font-size:9px;margin-top:4px}.grossSignal{border-left:1px solid var(--line);padding:2px 4px 2px 12px;min-width:0}.grossSignal .label{font-size:9px}.grossSignal .actionValue{font-size:17px;margin:2px 0}.grossSignal .small{font-size:9px}.grossRef .metricVal{font-size:10px}
+.ldeCard.authority{border-color:rgba(71,209,140,.75);background:linear-gradient(180deg,rgba(71,209,140,.09),rgba(71,209,140,.025));box-shadow:0 0 0 1px rgba(71,209,140,.08) inset}.ldeCard.authority .ldeLabel{color:var(--good)}.ldeCard.authority .ldeValue{font-size:24px;color:var(--good)}.ldeAuthorityNote{color:var(--good)!important;font-weight:800}
+@media(max-width:760px){.grossRef{grid-template-columns:1fr}.grossSignal{border-left:0;border-top:1px solid var(--line);padding:10px 3px 2px}}
+
+/* P9.1 candidate · Liquidity Deployment Engine */
+.ldeSection{margin-top:18px;border:1px solid rgba(45,212,191,.34);background:linear-gradient(180deg,rgba(45,212,191,.035),rgba(255,255,255,.008));border-radius:16px;padding:14px}
+.ldeHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.ldeTitle{font-size:14px;font-weight:900;letter-spacing:.045em}.ldeSub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.45}
+.ldeGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:11px}.ldeCard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px;min-width:0}.ldeCard.good{border-color:rgba(71,209,140,.42)}.ldeCard.warn{border-color:rgba(244,201,93,.42)}.ldeCard.bad{border-color:rgba(255,107,107,.48)}
+.ldeLabel{font-size:9px;color:var(--muted);font-weight:800;letter-spacing:.045em}.ldeValue{font-size:18px;font-weight:850;margin-top:4px;overflow-wrap:anywhere}.ldeMeta{font-size:9px;color:var(--muted);margin-top:4px;line-height:1.4}
+.ldeRow{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;margin-top:10px}.ldePanel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px}.ldePanelTitle{font-size:10px;font-weight:900;letter-spacing:.06em;margin-bottom:8px}
+.ldeStatus{margin-top:10px;padding:9px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:10px;color:var(--muted);line-height:1.45}.ldeStatus.good{color:var(--good);border-color:rgba(71,209,140,.42)}.ldeStatus.warn{color:var(--warn);border-color:rgba(244,201,93,.42)}.ldeStatus.bad{color:var(--bad);border-color:rgba(255,107,107,.48)}
+@media(max-width:1080px){.ldeGrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:760px){.ldeRow{grid-template-columns:1fr}.ldeGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.ldeGrid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="top">
     <div>
-      <h1>Portfolio Cockpit V2.2</h1>
-      <div class="sub">PRODUCTION • Weekly Portfolio cockpit • BTC execution layer • Portfolio owns state • Operations audit remains read-only.</div>
+      <h1>Portfolio Cockpit V2.2 · P9.1</h1>
+      <div class="sub">PRODUCTION • Weekly Portfolio cockpit • Liquidity Deployment Engine • Protected goals never feed BTC eligibility • P4/P5/P6 lifecycle remains frozen.</div>
       <div class="chipRow">
         <span class="chip muted" id="weeklyChip">WEEKLY JSON NOT LOADED</span>
+        <span class="chip muted" id="liquidityChip">LIQUIDITY POLICY NOT LOADED</span>
         <span class="chip muted" id="auditChip">OPERATIONS AUDIT NOT LOADED</span>
+        <span class="chip good">P9.1 PRODUCTION</span>
         <span class="chip muted" id="modeChip">LOCAL PREVIEW</span>
       </div>
     </div>
     <div class="controls">
       <label class="fileBtn">LOAD PORTFOLIO WEEKLY<input id="weeklyFile" type="file" accept=".json,application/json"></label>
+      <label class="fileBtn">LOAD LIQUIDITY POLICY<input id="liquidityFile" type="file" accept=".json,application/json"></label>
       <label class="fileBtn">LOAD OPERATIONS AUDIT<input id="auditFile" type="file" accept=".json,application/json"></label>
       <label class="fileBtn">LOAD ACTIVE EXECUTION<input id="executionFile" type="file" accept=".json,application/json"></label>
       <button class="btn" id="reloadBtn">Reload local package</button>
@@ -105,6 +126,12 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
       <div class="sourceFile" id="weeklySourceFile">NOT LOADED</div>
       <div class="sourceMeta" id="weeklySourceMeta">Expected: LOAD_PORTFOLIO_WEEKLY__*.json</div>
       <div class="sourceActions"><button class="miniBtn danger" id="clearWeeklyBtn">CLEAR PORTFOLIO SOURCE</button></div>
+    </div>
+    <div class="sourceCard" id="liquiditySourceCard">
+      <div class="sourceTitle">LIQUIDITY POLICY · REQUIRED FOR FRESH DEPLOYMENT</div>
+      <div class="sourceFile" id="liquiditySourceFile">NOT LOADED</div>
+      <div class="sourceMeta" id="liquiditySourceMeta">Expected: LOAD_LIQUIDITY_POLICY__*.json</div>
+      <div class="sourceActions"><button class="miniBtn danger" id="clearLiquidityBtn">CLEAR LIQUIDITY POLICY</button></div>
     </div>
     <div class="sourceCard" id="auditSourceCard">
       <div class="sourceTitle">OPERATIONS AUDIT SOURCE · OPTIONAL</div>
@@ -148,19 +175,62 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
     </div>
   </details>
 
-  <div class="two">
-    <div class="card">
-      <div class="ratioTop"><div><div class="label">Asset / Buffer thermometer</div><div class="ratio" id="ratioText">— / —</div></div><div style="text-align:right"><div class="label">New BTC exposure</div><div class="metricVal" id="exposureText">—</div></div></div>
+  <section class="grossRef" aria-label="Gross portfolio allocation reference">
+    <div class="grossRefCard">
+      <div class="grossRefTop">
+        <div><div class="grossRefTitle">GROSS PORTFOLIO ALLOCATION</div><div class="ratio" id="ratioText">— / —</div></div>
+        <div style="text-align:right"><div class="grossRefAuthority">INFORMATIONAL ONLY · NOT DEPLOYMENT AUTHORITY</div><div class="metricVal" id="exposureText" style="margin-top:5px">—</div></div>
+      </div>
       <div class="bar"><div class="fill" id="ratioFill"></div></div><div class="band"></div>
-      <div class="small" id="ratioNote">Load the weekly state to activate the allocation gate.</div>
+      <div class="small" id="ratioNote">Gross balance-sheet reference only. Liquidity Deployment Engine owns deployment eligibility.</div>
     </div>
-    <div class="card actionCard" id="actionCard">
-      <div class="label" id="actionLabel">BALANCE-SHEET STATUS</div>
+    <div class="grossSignal actionCard" id="actionCard">
+      <div class="label" id="actionLabel">GROSS 60/40 REFERENCE</div>
       <div class="actionValue" id="actionValue">—</div>
-      <div class="small" id="actionText">Waiting for weekly state.</div>
+      <div class="small" id="actionText">Reference only. FINAL ELIGIBLE below is authoritative for execution.</div>
     </div>
-  </div>
+  </section>
 
+
+  <section class="ldeSection" id="liquidityEngine">
+    <div class="ldeHead">
+      <div>
+        <div class="ldeTitle">LIQUIDITY DEPLOYMENT ENGINE · DEPLOYMENT AUTHORITY</div>
+        <div class="ldeSub">Read-only policy filter between Portfolio liquidity and BTC execution. Core Buffer / Japan / Car / liabilities cannot become deployable capital.</div>
+      </div>
+      <span class="badge bad" id="ldeModeBadge">POLICY NOT LOADED</span>
+    </div>
+
+    <div class="ldeGrid">
+      <div class="ldeCard"><div class="ldeLabel">PHYSICAL LIQUIDITY</div><div class="ldeValue" id="ldePhysical">—</div><div class="ldeMeta">All EUR + USDC EUR value in weekly snapshot</div></div>
+      <div class="ldeCard"><div class="ldeLabel">PROTECTED / RESERVED</div><div class="ldeValue" id="ldeProtected">—</div><div class="ldeMeta">Core + Japan + Car + scheduled liabilities</div></div>
+      <div class="ldeCard"><div class="ldeLabel">FREE LIQUIDITY</div><div class="ldeValue" id="ldeFree">—</div><div class="ldeMeta">Only potential deployment source</div></div>
+      <div class="ldeCard"><div class="ldeLabel">UNCLASSIFIED</div><div class="ldeValue" id="ldeUnclassified">—</div><div class="ldeMeta">Positive residual = HOLD / fail closed</div></div>
+      <div class="ldeCard"><div class="ldeLabel">CAPACITY TO 60%</div><div class="ldeValue" id="ldeCapacity">—</div><div class="ldeMeta">Strategic-pool internal reallocation</div></div>
+      <div class="ldeCard good authority"><div class="ldeLabel">FINAL ELIGIBLE · AUTHORITY</div><div class="ldeValue" id="ldeEligible">€0.00</div><div class="ldeMeta ldeAuthorityNote">Only this value may feed fresh execution capital lock</div></div>
+    </div>
+
+    <div class="ldeRow">
+      <div class="ldePanel">
+        <div class="ldePanelTitle">FROZEN POLICY BUCKETS</div>
+        <div class="metricRow"><span class="metricName">Core Buffer · PROTECTED</span><span class="metricVal" id="ldeCore">—</span></div>
+        <div class="metricRow"><span class="metricName">Japan Fund · PROTECTED GOAL</span><span class="metricVal" id="ldeJapan">—</span></div>
+        <div class="metricRow"><span class="metricName">Car Fund · PROTECTED GOAL</span><span class="metricVal" id="ldeCar">—</span></div>
+        <div class="metricRow"><span class="metricName">Scheduled Liabilities · RESERVED</span><span class="metricVal" id="ldeLiabilities">—</span></div>
+        <div class="metricRow"><span class="metricName">Free Liquidity · CANDIDATE</span><span class="metricVal" id="ldeFreeRow">—</span></div>
+      </div>
+      <div class="ldePanel">
+        <div class="ldePanelTitle">STRATEGIC ALLOCATION FILTER</div>
+        <div class="metricRow"><span class="metricName">Strategic pool</span><span class="metricVal" id="ldeStrategicPool">—</span></div>
+        <div class="metricRow"><span class="metricName">Strategic Asset / Liquidity</span><span class="metricVal" id="ldeStrategicRatio">—</span></div>
+        <div class="metricRow"><span class="metricName">Policy / weekly date alignment</span><span class="metricVal" id="ldeDateAlign">—</span></div>
+        <div class="metricRow"><span class="metricName">Reconciliation</span><span class="metricVal" id="ldeReconciliation">—</span></div>
+        <div class="metricRow"><span class="metricName">Manual deployment gate</span><span class="metricVal" id="ldeManualGate">CLOSED</span></div>
+      </div>
+    </div>
+    <div class="ldeStatus bad" id="ldeStatus">Fresh deployment is blocked until a valid policy sidecar matching the weekly snapshot is loaded.</div>
+    <div class="small">The P9 allocation card above remains the gross balance-sheet signal. Only <strong>FINAL ELIGIBLE</strong> from this engine is allowed to feed the existing execution lifecycle.</div>
+  </section>
 
   <section class="execSection" id="executionLayer">
     <div class="execHead">
@@ -181,8 +251,8 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
     </div>
 
     <div class="execGrid">
-      <div class="execCard"><div class="execLabel">AVAILABLE BUFFER</div><div class="execValue" id="execBuffer">—</div><div class="execMeta">Portfolio live/session state</div></div>
-      <div class="execCard"><div class="execLabel">ELIGIBLE DEPLOYMENT</div><div class="execValue" id="execEligible">—</div><div class="execMeta">Portfolio CALC · cap, not quota</div></div>
+      <div class="execCard"><div class="execLabel">PHYSICAL LIQUIDITY</div><div class="execValue" id="execBuffer">—</div><div class="execMeta">Weekly Portfolio balance-sheet state</div></div>
+      <div class="execCard"><div class="execLabel">ELIGIBLE DEPLOYMENT</div><div class="execValue" id="execEligible">—</div><div class="execMeta">Liquidity Engine FINAL · cap, not quota</div></div>
       <div class="execCard locked"><div class="execLabel">LOCKED ELIGIBILITY</div><div class="execValue" id="execLockedEligibility">—</div><div class="execMeta">Frozen per event</div></div>
       <div class="execCard locked"><div class="execLabel">EXECUTION CAPITAL</div><div class="execValue" id="execCapital">—</div><div class="execMeta">Actual manual USDC wins</div></div>
 
@@ -303,19 +373,19 @@ h1{margin:0 0 5px;font-size:29px;letter-spacing:-.5px}.sub{color:var(--muted);fo
   </div>
 
   <div class="footer">
-    <span class="privacy">Public-safe shell:</span> this HTML contains no embedded personal balance telemetry and stores nothing in localStorage. P7C may keep manually loaded private state in <code>sessionStorage</code> so F5 does not erase the current session; closing the browser session clears it. Private LOAD_ JSON files remain local-only. Operations Dashboard remains a separate accounting cockpit.
+    <span class="privacy">Public-safe P9.1 production:</span> this HTML contains no embedded personal balance telemetry and stores nothing in localStorage. P7C may keep manually loaded private state in <code>sessionStorage</code> so F5 does not erase the current session; closing the browser session clears it. Private LOAD_ JSON files remain local-only. Operations Dashboard remains a separate accounting cockpit.
   </div>
 </div>
 <script>
 "use strict";
 const $=id=>document.getElementById(id);
-const SESSION_KEY="tradeProject.portfolio.p7c.session.v1";
+const SESSION_KEY="tradeProject.portfolio.p9_1_liquidity_candidate.session.v1";
 const EXPECTED_OPS_REV="step8a-2025-monthly-lock-1";
 const EXPECTED_OPS_SHA256="9f9b1e15c1d24b0ec8d5819be263f39dd2831360472221de3eede1d0c3b500d7";
 const TERMINAL_LIFECYCLES=new Set(["COMPLETE","CLOSED_PARTIAL","ABORTED"]);
 
-let weekly=null,audit=null,activeExecution=null,btcPrice=null,fx=null;
-let sources={weekly:null,audit:null,execution:null};
+let weekly=null,liquidityPolicy=null,audit=null,activeExecution=null,btcPrice=null,fx=null;
+let sources={weekly:null,liquidity:null,audit:null,execution:null};
 let restoredFromSession=false;
 let executionGate="CLOSED";
 let execMarket=null;
@@ -358,6 +428,21 @@ function normalizeWeekly(d){
   return out;
 }
 
+
+function normalizeLiquidityPolicy(d){
+  if(!d||typeof d!=="object")throw new Error("Liquidity policy JSON is not an object");
+  if(d.schema!=="portfolio-liquidity-policy-v1")throw new Error("Wrong JSON type: expected portfolio-liquidity-policy-v1, received "+String(d.schema||"unknown"));
+  if(d.contractVersion!==1)throw new Error("Unsupported liquidity policy contractVersion: "+String(d.contractVersion));
+  if(d.template===true)throw new Error("Template policy cannot be loaded as live policy");
+  const asOf=String(d.asOf||"").slice(0,10);if(!/^\d{4}-\d{2}-\d{2}$/.test(asOf))throw new Error("Missing/invalid liquidity policy asOf");
+  if(String(d.currency||"EUR").toUpperCase()!=="EUR")throw new Error("Liquidity policy currency must be EUR");
+  const a=d.allocations;if(!a||typeof a!=="object"||Array.isArray(a))throw new Error("Missing allocations object");
+  const required=["core_buffer","japan_fund","car_fund","scheduled_liabilities","free_liquidity"],keys=Object.keys(a).sort(),expected=[...required].sort();
+  if(keys.length!==expected.length||keys.some((k,i)=>k!==expected[i]))throw new Error("Liquidity bucket registry mismatch; ad-hoc/missing buckets are blocked");
+  const clean={};for(const k of required){if(!isNum(a[k])||a[k]<0)throw new Error(k+" must be a non-negative EUR number");clean[k]=a[k]}
+  return {schema:d.schema,contractVersion:1,asOf,currency:"EUR",allocations:clean};
+}
+
 function normalizeAudit(d){
   if(!d||d.schema!=="operations-portfolio-audit-v1")throw new Error("Wrong JSON type: expected operations-portfolio-audit-v1, received "+String(d?.schema||"unknown"));
   const rev=d?.source?.masterRevision;
@@ -384,13 +469,13 @@ function executionStarted(e=activeExecution){
 
 function recommendedName(kind,name){
   const n=String(name||"");
-  const prefix=kind==="weekly"?"LOAD_PORTFOLIO_WEEKLY__":kind==="audit"?"LOAD_OPERATIONS_AUDIT__":"LOAD_ACTIVE_EXECUTION__";
+  const prefix=kind==="weekly"?"LOAD_PORTFOLIO_WEEKLY__":kind==="liquidity"?"LOAD_LIQUIDITY_POLICY__":kind==="audit"?"LOAD_OPERATIONS_AUDIT__":"LOAD_ACTIVE_EXECUTION__";
   return n.startsWith(prefix);
 }
 
 function saveSession(){
   try{
-    sessionStorage.setItem(SESSION_KEY,JSON.stringify({weekly,audit,activeExecution,sources,executionGate}));
+    sessionStorage.setItem(SESSION_KEY,JSON.stringify({weekly,liquidityPolicy,audit,activeExecution,sources,executionGate}));
   }catch(e){
     $("statusLine").textContent="Session persistence warning: "+e.message;
   }
@@ -402,16 +487,17 @@ function restoreSession(){
     if(!raw)return false;
     const s=JSON.parse(raw);
     if(s.weekly)weekly=normalizeWeekly(s.weekly);
+    if(s.liquidityPolicy)liquidityPolicy=normalizeLiquidityPolicy(s.liquidityPolicy);
     if(s.audit)audit=normalizeAudit(s.audit);
     if(s.activeExecution)activeExecution=normalizeExecution(s.activeExecution);
     sources=s.sources||sources;
     executionGate=["CLOSED","WATCH","OPEN"].includes(s.executionGate)?s.executionGate:(activeExecution?.deploymentGate||"CLOSED");
-    restoredFromSession=!!(weekly||audit||activeExecution);
+    restoredFromSession=!!(weekly||liquidityPolicy||audit||activeExecution);
     return restoredFromSession;
   }catch(e){
     sessionStorage.removeItem(SESSION_KEY);
-    weekly=audit=activeExecution=null;
-    sources={weekly:null,audit:null,execution:null};executionGate="CLOSED";
+    weekly=liquidityPolicy=audit=activeExecution=null;
+    sources={weekly:null,liquidity:null,audit:null,execution:null};executionGate="CLOSED";
     $("statusLine").textContent="Stored session rejected and cleared: "+e.message;
     return false;
   }
@@ -421,6 +507,44 @@ function totalBuffer(){if(!weekly)return null;const b=weekly.balances;return b.r
 function totalBtc(){return weekly?.balances?.btcTotal??null}
 function currentPrice(){return isNum(btcPrice)?btcPrice:(weekly?.observedBtcPriceEur??null)}
 function snapshotTotal(){const p=currentPrice(),t=totalBtc(),buf=totalBuffer();return isNum(p)&&isNum(t)&&isNum(buf)?t*p+buf:null}
+
+function liquidityDeploymentState(){
+  const physical=totalBuffer();
+  if(!weekly)return {status:"WAITING_WEEKLY",eligible:0,physical:null};
+  if(!liquidityPolicy)return {status:"BLOCKED_POLICY_MISSING",eligible:0,physical,reason:"Load a valid liquidity policy sidecar before fresh deployment."};
+  if(liquidityPolicy.asOf!==weekly.asOf)return {status:"BLOCKED_SNAPSHOT_MISMATCH",eligible:0,physical,reason:`Policy ${liquidityPolicy.asOf} does not match weekly ${weekly.asOf}.`};
+  const a=liquidityPolicy.allocations,core=a.core_buffer,japan=a.japan_fund,car=a.car_fund,liabilities=a.scheduled_liabilities,free=a.free_liquidity;
+  const explicit=core+japan+car+liabilities+free,residual=physical-explicit,tol=.01;
+  if(residual>tol)return {status:"HOLD_UNCLASSIFIED",eligible:0,physical,explicit,unclassified:residual,core,japan,car,liabilities,free,reason:`${eur(residual)} is not classified; new cash remains HOLD.`};
+  if(residual<-tol)return {status:"POLICY_MISMATCH",eligible:0,physical,explicit,unclassified:residual,core,japan,car,liabilities,free,reason:`Policy allocations exceed physical liquidity by ${eur(-residual)}.`};
+  const p=currentPrice(),t=totalBtc(),asset=(isNum(p)&&isNum(t))?p*t:null;
+  if(!isNum(asset))return {status:"BLOCKED_VALUATION",eligible:0,physical,explicit,unclassified:0,core,japan,car,liabilities,free,reason:"BTC EUR valuation unavailable."};
+  const strategicLiquidity=core+free,strategicPool=asset+strategicLiquidity;
+  if(!(strategicPool>0))return {status:"BLOCKED_STRATEGIC_POOL",eligible:0,physical,explicit,unclassified:0,core,japan,car,liabilities,free,asset,reason:"Strategic pool is invalid."};
+  const assetPct=asset/strategicPool*100,liquidityPct=100-assetPct,capacity=Math.max(0,.60*strategicPool-asset);
+  let status,eligible=0,reason;
+  if(assetPct>65){status="BUFFER_MODE";reason="Strategic asset side is above 65%; rebuild protected liquidity."}
+  else if(assetPct>=60){status="NORMAL_OPERATING_ZONE";reason="Strategic allocation is inside the 60–65% operating band."}
+  else if(free<=tol){status="DEPLOYMENT_SIGNAL_NO_FREE_CAPITAL";reason="Asset side is below 60%, but no FREE liquidity exists."}
+  else{eligible=Math.min(free,capacity);status=eligible>tol?"DEPLOYMENT_CAPACITY":"NORMAL_OPERATING_ZONE";reason=eligible>tol?"FREE liquidity may be reallocated toward the 60% boundary; manual gate still applies.":"No deployment capacity."}
+  return {status,eligible,physical,explicit,unclassified:0,core,japan,car,liabilities,free,asset,strategicLiquidity,strategicPool,assetPct,liquidityPct,capacity,reason};
+}
+function ldeClass(status){return ["DEPLOYMENT_CAPACITY","NORMAL_OPERATING_ZONE"].includes(status)?"good":["BUFFER_MODE","HOLD_UNCLASSIFIED","DEPLOYMENT_SIGNAL_NO_FREE_CAPITAL"].includes(status)?"warn":"bad"}
+function renderLiquidityEngine(){
+  if(!$("liquidityEngine"))return;
+  const x=liquidityDeploymentState(),cls=ldeClass(x.status);
+  $("ldeModeBadge").textContent=x.status.replaceAll("_"," ");$("ldeModeBadge").className="badge "+cls;
+  $("ldePhysical").textContent=isNum(x.physical)?eur(x.physical):"—";
+  const protectedTotal=[x.core,x.japan,x.car,x.liabilities].every(isNum)?x.core+x.japan+x.car+x.liabilities:null;
+  $("ldeProtected").textContent=isNum(protectedTotal)?eur(protectedTotal):"—";$("ldeFree").textContent=isNum(x.free)?eur(x.free):"—";
+  $("ldeUnclassified").textContent=isNum(x.unclassified)?eur(Math.max(0,x.unclassified)):"—";$("ldeCapacity").textContent=isNum(x.capacity)?eur(x.capacity):"—";$("ldeEligible").textContent=eur(x.eligible||0);
+  $("ldeCore").textContent=isNum(x.core)?eur(x.core):"—";$("ldeJapan").textContent=isNum(x.japan)?eur(x.japan):"—";$("ldeCar").textContent=isNum(x.car)?eur(x.car):"—";$("ldeLiabilities").textContent=isNum(x.liabilities)?eur(x.liabilities):"—";$("ldeFreeRow").textContent=isNum(x.free)?eur(x.free):"—";
+  $("ldeStrategicPool").textContent=isNum(x.strategicPool)?eur(x.strategicPool):"—";$("ldeStrategicRatio").textContent=isNum(x.assetPct)?pct(x.assetPct)+" / "+pct(x.liquidityPct):"—";
+  $("ldeDateAlign").textContent=weekly&&liquidityPolicy?(weekly.asOf===liquidityPolicy.asOf?"MATCH · "+weekly.asOf:"BLOCKED · "+weekly.asOf+" vs "+liquidityPolicy.asOf):"—";
+  $("ldeReconciliation").textContent=isNum(x.physical)&&isNum(x.explicit)?(Math.abs(x.physical-x.explicit)<=.01?"PASS":"BLOCKED · Δ "+eur(x.physical-x.explicit)):"—";
+  $("ldeManualGate").textContent=executionGate;$("ldeStatus").textContent=x.reason||"Waiting for required inputs.";$("ldeStatus").className="ldeStatus "+cls;
+}
+
 
 function setChip(el,text,cls){el.textContent=text;el.className="chip "+cls}
 function setBadge(el,text,cls){el.textContent=text;el.className="badge "+cls}
@@ -444,6 +568,10 @@ function renderSources(){
   if(weekly){
     setSourceCard("weekly",true,sourceName("weekly"),"As of "+weekly.asOf+" · LOADED"+(sources.weekly?.nameWarning?" · LEGACY NAME":"")+" · "+(restoredFromSession?"SESSION RESTORED":"CURRENT SESSION"),"good");
   }else setSourceCard("weekly",false,"","Expected: LOAD_PORTFOLIO_WEEKLY__*.json");
+  if(liquidityPolicy){
+    const aligned=!!weekly&&weekly.asOf===liquidityPolicy.asOf;
+    setSourceCard("liquidity",true,sourceName("liquidity"),"As of "+liquidityPolicy.asOf+" · CONTRACT v1 · "+(aligned?"DATE MATCH":"DATE CHECK")+" · "+(restoredFromSession?"SESSION RESTORED":"CURRENT SESSION"),aligned?"good":"warn");
+  }else setSourceCard("liquidity",false,"","Expected: LOAD_LIQUIDITY_POLICY__*.json · required for fresh deployment");
   if(audit){
     setSourceCard("audit",true,sourceName("audit"),"Master "+(audit.source?.masterRevision||"—")+" · VERIFIED · "+(restoredFromSession?"SESSION RESTORED":"CURRENT SESSION"),"good");
   }else setSourceCard("audit",false,"","Expected: LOAD_OPERATIONS_AUDIT__*.json · current required master: "+EXPECTED_OPS_REV);
@@ -456,11 +584,13 @@ function render(){
   renderSources();
   if(!weekly){
     setChip($("weeklyChip"),"WEEKLY JSON NOT LOADED","muted");
+    setChip($("liquidityChip"),liquidityPolicy?"LIQUIDITY POLICY "+liquidityPolicy.asOf+" LOADED":"LIQUIDITY POLICY NOT LOADED",liquidityPolicy?"warn":"muted");
     renderStatusLine((restoredFromSession?"Session restored, but ":"")+"Portfolio weekly source is not loaded. Choose LOAD PORTFOLIO WEEKLY.");
-    renderAudit();renderExecution();
+    renderAudit();renderLiquidityEngine();renderExecution();
     return;
   }
   setChip($("weeklyChip"),"WEEKLY "+weekly.asOf+" LOADED","good");
+  if(liquidityPolicy){const aligned=liquidityPolicy.asOf===weekly.asOf;setChip($("liquidityChip"),"LIQUIDITY "+liquidityPolicy.asOf+(aligned?" MATCH":" MISMATCH"),aligned?"good":"bad")}else setChip($("liquidityChip"),"LIQUIDITY POLICY NOT LOADED","bad");
   $("snapshotMeta").textContent="Snapshot: "+weekly.asOf;
   $("auditSnapshot").textContent=weekly.asOf;$("flowCurrent").textContent=weekly.asOf;
   const b=weekly.balances,tbtc=totalBtc(),p=currentPrice(),buffer=totalBuffer(),asset=isNum(p)?tbtc*p:null,total=isNum(asset)?asset+buffer:null;
@@ -473,9 +603,9 @@ function render(){
   if(isNum(total)&&total>0){
     const ap=asset/total*100,bp=100-ap;$("ratioText").textContent=pct(ap)+" / "+pct(bp);$("ratioFill").style.width=Math.max(0,Math.min(100,ap))+"%";
     const card=$("actionCard"),av=$("actionValue");card.className="card actionCard";av.className="actionValue";
-    if(ap>65){const gap=Math.max(0,asset/0.65-asset-buffer);card.classList.add("warn");av.classList.add("warn");$("actionLabel").textContent="BUFFER MODE";av.textContent="+"+eur(gap);$("actionText").textContent="Additional buffer to return to the 65/35 working equilibrium. Existing BTC does not need to be sold.";$("ratioNote").textContent="Above 65% asset. New cashflow preferentially rebuilds reserve.";$("exposureText").textContent="Paused by buffer mode";
-    }else if(ap>=60){card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="NORMAL OPERATING ZONE";av.textContent="60–65%";$("actionText").textContent="No forced allocation action. Portfolio is inside the working band.";$("ratioNote").textContent="Inside the operating band. Allocation can remain unchanged.";$("exposureText").textContent="No forced action";
-    }else{const cap=Math.max(0,(0.60*total-asset)/0.40);card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="EXPOSURE CAP AVAILABLE";av.textContent=eur(cap);$("actionText").textContent="Capacity before reaching the 60/40 deployment gate. Cap is not a quota.";$("ratioNote").textContent="Below 60% asset. Deployment capacity exists subject to market structure and reserve discipline.";$("exposureText").textContent=eur(cap)}
+    if(ap>65){const gap=Math.max(0,asset/0.65-asset-buffer);card.classList.add("warn");av.classList.add("warn");$("actionLabel").textContent="GROSS BUFFER REFERENCE";av.textContent="+"+eur(gap);$("actionText").textContent="Gross balance-sheet reference only. Liquidity Engine FINAL ELIGIBLE remains authoritative.";$("ratioNote").textContent="Gross asset share is above 65%. Informational only; protected-policy treatment is evaluated below.";$("exposureText").textContent="Gross reference · no authority";
+    }else if(ap>=60){card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="GROSS OPERATING REFERENCE";av.textContent="60–65%";$("actionText").textContent="Gross balance-sheet band only. Liquidity Engine policy classification decides deployment eligibility.";$("ratioNote").textContent="Gross allocation is inside the 60–65% band. Informational only.";$("exposureText").textContent="Gross reference only";
+    }else{const cap=Math.max(0,(0.60*total-asset)/0.40);card.classList.add("good");av.classList.add("good");$("actionLabel").textContent="GROSS 60/40 REFERENCE";av.textContent=eur(cap);$("actionText").textContent="Legacy gross capacity reference only; this amount is NOT deployable authority.";$("ratioNote").textContent="Gross asset share is below 60%. Liquidity Engine must still exclude protected/reserved capital.";$("exposureText").textContent="Reference "+eur(cap)}
   }
   if(fx&&isNum(total)){
     $("fxUsdRate").textContent=fx.USD.toFixed(4);
@@ -488,9 +618,10 @@ function render(){
     $("portfolioUsd").textContent=$("portfolioJpy").textContent=$("portfolioIdr").textContent="—";
   }
   renderAudit();
+  renderLiquidityEngine();
   renderExecution();
   const sessionMsg=restoredFromSession?"RESTORED FROM SESSION":"CURRENT SESSION";
-  renderStatusLine("Portfolio "+weekly.asOf+" · "+sessionMsg+" · BTC valuation "+(isNum(btcPrice)?"live":"weekly fallback")+" · Operations audit "+(audit?"verified":"not loaded")+" · Active execution "+(activeExecution?activeExecution.lifecycle:"none")+".");
+  renderStatusLine("Portfolio "+weekly.asOf+" · "+sessionMsg+" · BTC valuation "+(isNum(btcPrice)?"live":"weekly fallback")+" · Liquidity engine "+liquidityDeploymentState().status+" · Operations audit "+(audit?"verified":"not loaded")+" · Active execution "+(activeExecution?activeExecution.lifecycle:"none")+".");
 }
 
 function renderAudit(){
@@ -516,6 +647,10 @@ async function loadPackageData(){
     weekly=w.data;sources.weekly={name:w.path.split("/").pop(),mode:"package",nameWarning:!w.path.includes("LOAD_PORTFOLIO_WEEKLY__")};
   }catch(e){notes.push("weekly: "+e.message)}
   try{
+    const l=await fetchFirst(["./private/LOAD_LIQUIDITY_POLICY__LATEST.json"],normalizeLiquidityPolicy);
+    liquidityPolicy=l.data;sources.liquidity={name:l.path.split("/").pop(),mode:"package",nameWarning:!l.path.includes("LOAD_LIQUIDITY_POLICY__")};
+  }catch(e){liquidityPolicy=null;sources.liquidity=null;notes.push("liquidity policy(required for fresh deployment): "+e.message)}
+  try{
     const a=await fetchFirst(["./private/LOAD_OPERATIONS_AUDIT__LATEST.json","./private/LOAD_ME__operations_audit_latest.json"],normalizeAudit);
     audit=a.data;sources.audit={name:a.path.split("/").pop(),mode:"package",nameWarning:!a.path.includes("LOAD_OPERATIONS_AUDIT__")};
   }catch(e){audit=null;sources.audit=null;notes.push("audit(optional): "+e.message)}
@@ -530,6 +665,9 @@ async function readChosen(file,kind){
     if(kind==="weekly"){
       weekly=normalizeWeekly(d);
       sources.weekly={name:file.name,mode:"manual",nameWarning:!named};
+    }else if(kind==="liquidity"){
+      liquidityPolicy=normalizeLiquidityPolicy(d);
+      sources.liquidity={name:file.name,mode:"manual",nameWarning:!named};
     }else if(kind==="audit"){
       audit=normalizeAudit(d);
       sources.audit={name:file.name,mode:"manual",nameWarning:!named};
@@ -540,9 +678,9 @@ async function readChosen(file,kind){
     }
     loadBlockNotice="";
     saveSession();render();
-    if(!named)$("statusLine").textContent="Loaded successfully, but filename is LEGACY/UNCLEAR. Future file should start with "+(kind==="weekly"?"LOAD_PORTFOLIO_WEEKLY__":kind==="audit"?"LOAD_OPERATIONS_AUDIT__":"LOAD_ACTIVE_EXECUTION__")+".";
+    if(!named)$("statusLine").textContent="Loaded successfully, but filename is LEGACY/UNCLEAR. Future file should start with "+(kind==="weekly"?"LOAD_PORTFOLIO_WEEKLY__":kind==="liquidity"?"LOAD_LIQUIDITY_POLICY__":kind==="audit"?"LOAD_OPERATIONS_AUDIT__":"LOAD_ACTIVE_EXECUTION__")+".";
   }catch(e){
-    loadBlockNotice=(kind==="weekly"?"Portfolio Weekly":kind==="audit"?"Operations Audit":"Active Execution")+" load BLOCKED: "+e.message;
+    loadBlockNotice=(kind==="weekly"?"Portfolio Weekly":kind==="liquidity"?"Liquidity Policy":kind==="audit"?"Operations Audit":"Active Execution")+" load BLOCKED: "+e.message;
     renderStatusLine("");
   }
 }
@@ -550,6 +688,10 @@ async function readChosen(file,kind){
 function clearWeekly(){
   if(executionStarted()){ $("statusLine").textContent="CLEAR PORTFOLIO SOURCE BLOCKED: active execution is already past MARKET_EXECUTED. Close/archive the event first."; return; }
   loadBlockNotice="";weekly=null;sources.weekly=null;saveSession();render();$("statusLine").textContent="Portfolio weekly source cleared from this browser session.";
+}
+function clearLiquidity(){
+  if(executionStarted()){ $("statusLine").textContent="CLEAR LIQUIDITY POLICY BLOCKED: executed event is active. Close/archive it first."; return; }
+  loadBlockNotice="";liquidityPolicy=null;sources.liquidity=null;saveSession();render();$("statusLine").textContent="Liquidity policy cleared. Fresh deployment eligibility forced to €0 until a valid policy is loaded.";
 }
 function clearAudit(){loadBlockNotice="";audit=null;sources.audit=null;saveSession();render();$("statusLine").textContent="Operations audit source cleared. Portfolio remains usable standalone."}
 function clearExecution(){
@@ -642,10 +784,9 @@ async function refreshExecutionMarket(){
 function portfolioExecutionState(){
   if(!weekly)return {buffer:null,asset:null,total:null,assetPct:null,bufferPct:null,eligible:null};
   const buffer=totalBuffer(),p=currentPrice(),t=totalBtc(),asset=(isNum(p)&&isNum(t))?p*t:null,total=(isNum(asset)&&isNum(buffer))?asset+buffer:null;
-  if(!(total>0))return {buffer,asset,total,assetPct:null,bufferPct:null,eligible:null};
-  const assetPct=asset/total*100,bufferPct=100-assetPct;
-  const eligible=assetPct<60?Math.max(0,(.60*total-asset)/.40):0;
-  return {buffer,asset,total,assetPct,bufferPct,eligible};
+  if(!(total>0))return {buffer,asset,total,assetPct:null,bufferPct:null,eligible:0};
+  const assetPct=asset/total*100,bufferPct=100-assetPct,lde=liquidityDeploymentState();
+  return {buffer,asset,total,assetPct,bufferPct,eligible:isNum(lde.eligible)?lde.eligible:0};
 }
 function newExecEvent(){
   return {
@@ -887,6 +1028,7 @@ function renderExecution(){
   if(e?.actualUSDC!=null&&!$("execActualUsdc").matches(":focus"))$("execActualUsdc").value=e.actualUSDC;
   updateProjected();
 
+  if($("ldeManualGate"))$("ldeManualGate").textContent=executionGate;
   const gatePre=executionGate==="OPEN"&&!executed&&!terminal,marketReady=!!execMarket?.ready;
   $("execLockCapital").disabled=!(executionGate==="OPEN"&&(!e||life==="EMPTY")&&isNum(live.eligible)&&live.eligible>0);
   $("execLockAnchor").disabled=!(gatePre&&life==="CAPITAL_LOCKED"&&marketReady);
@@ -937,9 +1079,11 @@ $("execArchiveClear").addEventListener("click",actionArchiveClear);
 
 $("reloadBtn").addEventListener("click",async()=>{await loadPackageData();await refreshMarket()});
 $("weeklyFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"weekly");e.target.value=""});
+$("liquidityFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"liquidity");e.target.value=""});
 $("auditFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"audit");e.target.value=""});
 $("executionFile").addEventListener("change",e=>{const f=e.target.files?.[0];if(f)readChosen(f,"execution");e.target.value=""});
 $("clearWeeklyBtn").addEventListener("click",clearWeekly);
+$("clearLiquidityBtn").addEventListener("click",clearLiquidity);
 $("clearAuditBtn").addEventListener("click",clearAudit);
 $("clearExecutionBtn").addEventListener("click",clearExecution);
 
